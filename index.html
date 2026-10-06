@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f3">
+  <title>KoZ Lead Rescue — Interactive Demo</title>
+  <style>
+    :root {
+      --ink: #182a24;
+      --muted: #66766f;
+      --soft: #eef3ed;
+      --paper: #f5f7f3;
+      --white: #fff;
+      --line: #e3eae2;
+      --green: #1f6a53;
+      --green-dark: #174b3d;
+      --mint: #e7f5eb;
+      --lime: #c9ef73;
+      --amber: #e99d4e;
+      --red: #cf6c5f;
+      --shadow: 0 18px 50px rgba(30, 53, 43, .08);
+      --small-shadow: 0 7px 22px rgba(30, 53, 43, .06);
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 10% 0%, rgba(201,239,115,.16), transparent 28rem),
+        var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .wrap { width: min(1160px, calc(100% - 44px)); margin: 0 auto; }
+    .topbar { height: 76px; display: flex; align-items: center; border-bottom: 1px solid rgba(24,42,36,.07); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; min-width: 190px; }
+    .brand-mark { display: grid; place-items: center; width: 40px; height: 40px; color: var(--green-dark); background: var(--lime); border-radius: 13px; }
+    .brand-word { font-weight: 820; letter-spacing: -.045em; line-height: 1; font-size: 19px; }
+    .brand-word small { display: block; color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: .16em; margin-top: 5px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: #51635b; font-size: 13px; font-weight: 650; }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .preview-pill, .eyebrow, .micro-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.65); border-radius: 99px; padding: 8px 11px; color: #52665b; font-size: 10px; font-weight: 760; letter-spacing: .09em; text-transform: uppercase; }
+    .tiny-dot { width: 7px; height: 7px; border-radius: 50%; background: #39a56f; box-shadow: 0 0 0 3px rgba(57,165,111,.13); }
+    .button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 12px; padding: 0 17px; font-weight: 750; font-size: 13px; text-decoration: none; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .button:hover { transform: translateY(-1px); }
+    .button-dark { color: #fff; background: var(--green-dark); box-shadow: 0 7px 16px rgba(23,75,61,.15); }
+    .button-dark:hover { background: #103e32; box-shadow: 0 10px 24px rgba(23,75,61,.19); }
+    .button-light { color: var(--ink); border: 1px solid var(--line); background: #fff; }
+    .button-light:hover { background: #f8fbf6; }
+    .button-lime { color: var(--green-dark); background: var(--lime); }
+    .button-lime:hover { background: #d4f48c; }
+
+    .hero { padding: 77px 0 68px; display: grid; grid-template-columns: 1.03fr .97fr; align-items: center; gap: 56px; }
+    .hero-copy { max-width: 615px; }
+    .eyebrow { background: #eff5e5; border-color: #e5edd6; color: #4c6b38; }
+    .hero h1 { margin: 21px 0 18px; font-size: clamp(42px, 5.5vw, 67px); line-height: .99; letter-spacing: -.065em; font-weight: 790; }
+    .hero h1 .highlight { color: var(--green); }
+    .hero-copy > p { max-width: 520px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; margin: 27px 0 20px; flex-wrap: wrap; }
+    .fine-line { color: #77857e; display: flex; align-items: center; gap: 7px; font-size: 11px; }
+    .fine-line svg { color: var(--green); flex: 0 0 auto; }
+    .hero-art { min-height: 378px; border: 1px solid #e5eae2; background: linear-gradient(145deg,#fff 4%,#f7faf2 100%); border-radius: 28px; box-shadow: var(--shadow); padding: 24px; position: relative; overflow: hidden; }
+    .hero-art::before { content:""; position:absolute; width:245px; height:245px; border-radius:50%; background:rgba(201,239,115,.18); top:-99px; right:-49px; }
+    .mock-top { display:flex; align-items:center; justify-content:space-between; position:relative; z-index:1; }
+    .mock-title { display:flex; align-items:center; gap:9px; font-size:12px; font-weight:780; }
+    .mock-avatar { width:31px; height:31px; border-radius:10px; display:grid; place-items:center; color:#254537; background:#e8f1e4; }
+    .mock-label { font-size:9px; color:#728078; letter-spacing:.12em; font-weight:800; }
+    .mock-card { position:relative; z-index:1; background:white; border:1px solid var(--line); border-radius:17px; padding:17px; margin-top:24px; box-shadow:var(--small-shadow); }
+    .mock-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .mock-card h3 { margin:0 0 5px; font-size:14px; letter-spacing:-.025em; }
+    .mock-card p { margin:0; color:var(--muted); font-size:11px; line-height:1.5; }
+    .status-tag { display:inline-flex; gap:6px; align-items:center; border-radius:99px; padding:6px 8px; background:#eaf6ed; color:#36724b; font-size:9px; font-weight:790; white-space:nowrap; }
+    .status-tag .tiny-dot { width:6px; height:6px; box-shadow:none; }
+    .reply-bubble { margin:16px 0 13px 25px; border-radius:13px 13px 4px 13px; background:#edf6ee; padding:12px 13px; color:#345249; font-size:11px; line-height:1.6; }
+    .reply-meta { display:flex; align-items:center; gap:7px; margin-left:25px; color:#829088; font-size:9px; }
+    .reply-meta strong { color:#547463; font-weight:740; }
+    .mini-flow { position:relative; z-index:1; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:17px; }
+    .mini-step { border:1px solid #e8eee7; border-radius:12px; background:rgba(255,255,255,.76); padding:10px 9px; min-height:60px; }
+    .mini-step b { display:block; font-size:10px; margin:0 0 4px; }
+    .mini-step span { display:block; font-size:9px; color:var(--muted); line-height:1.4; }
+    .mock-foot { color:#89968d; display:flex; align-items:center; gap:6px; font-size:9px; margin-top:13px; }
+
+    .trust-strip { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:17px 21px; border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.61); margin:0 auto 83px; }
+    .trust-lead { font-size:10px; font-weight:800; color:#78867e; letter-spacing:.1em; text-transform:uppercase; }
+    .trust-items { display:flex; align-items:center; flex-wrap:wrap; gap:21px; color:#66766d; font-size:11px; font-weight:650; }
+    .trust-items span { display:inline-flex; align-items:center; gap:7px; }
+    .check { width:16px; height:16px; border-radius:50%; display:grid; place-items:center; color:#25674d; background:#e6f3df; font-size:10px; font-weight:900; }
+
+    section.content-section { padding: 18px 0 81px; }
+    .section-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:28px; margin-bottom:25px; }
+    .section-heading h2 { margin:13px 0 9px; font-size:clamp(28px,3.5vw,40px); letter-spacing:-.055em; line-height:1.05; }
+    .section-heading p { max-width:570px; margin:0; color:var(--muted); font-size:13px; line-height:1.65; }
+    .demo-badge { display:inline-flex; align-items:center; gap:7px; padding:8px 10px; border-radius:9px; background:#fff4e6; color:#99642d; font-size:9px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
+    .demo-shell { display:grid; grid-template-columns: 330px minmax(0,1fr); gap:16px; align-items:stretch; }
+    .panel { border:1px solid var(--line); background:#fff; border-radius:var(--radius); box-shadow:var(--small-shadow); }
+    .form-panel { padding:21px; }
+    .panel-kicker { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:800; color:#6e7d74; letter-spacing:.09em; text-transform:uppercase; }
+    .panel-title { font-size:18px; margin:12px 0 5px; letter-spacing:-.04em; }
+    .panel-desc { font-size:11px; line-height:1.6; color:var(--muted); margin:0 0 18px; }
+    .field { margin:0 0 12px; }
+    .field label { display:block; font-size:10px; font-weight:750; color:#43554c; margin:0 0 6px; }
+    .field input, .field select, .field textarea { width:100%; border:1px solid #e2e8e1; background:#fbfcfa; color:var(--ink); border-radius:10px; padding:10px 11px; outline:none; font-size:11px; transition:border-color .15s, box-shadow .15s; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color:#79aa89; box-shadow:0 0 0 3px rgba(31,106,83,.09); background:#fff; }
+    .field textarea { resize:vertical; min-height:67px; line-height:1.5; }
+    .field input::placeholder, .field textarea::placeholder { color:#a2ada6; }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .submit-button { width:100%; margin-top:4px; }
+    .form-privacy { display:flex; gap:7px; align-items:flex-start; margin:11px 1px 0; color:#849088; font-size:9px; line-height:1.5; }
+    .form-privacy svg { flex:0 0 auto; margin-top:1px; }
+
+    .console { overflow:hidden; }
+    .console-head { padding:19px 21px; display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid #edf0eb; }
+    .account { display:flex; align-items:center; gap:11px; }
+    .account-mark { width:38px; height:38px; display:grid; place-items:center; border-radius:12px; background:#edf4e7; color:#396745; }
+    .account-name { font-weight:780; font-size:13px; letter-spacing:-.02em; }
+    .account-sub { margin-top:4px; font-size:9px; color:#78867e; }
+    .console-controls { display:flex; align-items:center; gap:8px; }
+    .console-controls .button { min-height:36px; padding:0 12px; border-radius:10px; font-size:10px; }
+    .console-body { padding:18px 20px 20px; }
+    .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:14px; }
+    .stat { background:#f8faf7; border:1px solid #edf0eb; border-radius:12px; padding:11px 12px; }
+    .stat-label { color:#75837b; font-size:9px; font-weight:690; }
+    .stat-value { margin-top:7px; font-size:16px; letter-spacing:-.04em; font-weight:790; }
+    .stat-value small { color:#6b7c72; font-size:9px; font-weight:650; letter-spacing:0; }
+    .lead-overview { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 14px; border:1px solid #e7ece6; border-radius:13px; background:#fff; }
+    .lead-identity { display:flex; align-items:center; gap:10px; min-width:0; }
+    .lead-avatar { display:grid; place-items:center; width:34px; height:34px; flex:0 0 auto; border-radius:11px; background:#f1eadf; color:#89653d; font-size:11px; font-weight:800; }
+    .lead-name { font-size:11px; font-weight:780; }
+    .lead-sub { color:#77847d; margin-top:4px; font-size:9px; }
+    .lead-source { font-size:9px; color:#6b7b72; white-space:nowrap; }
+    .conversation { margin-top:13px; border:1px solid #e8ede7; border-radius:13px; overflow:hidden; }
+    .conversation-head { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#fbfcfa; border-bottom:1px solid #edf0eb; }
+    .conversation-head strong { font-size:10px; }
+    .conversation-head span { color:#87938c; font-size:9px; }
+    .conversation-body { min-height:94px; padding:12px; background:#fff; }
+    .incoming-bubble { max-width:83%; margin:0 0 9px auto; padding:9px 10px; border-radius:11px 11px 3px 11px; color:#4f5c54; background:#f2f3f1; font-size:9px; line-height:1.45; }
+    .outgoing-bubble { max-width:91%; padding:10px 11px; border-radius:11px 11px 11px 3px; color:#36554a; background:#eaf5eb; font-size:9px; line-height:1.55; }
+    .bubble-label { margin-top:5px; color:#8a968f; font-size:8px; }
+    .timeline-wrap { margin-top:17px; }
+    .timeline-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .timeline-heading strong { font-size:10px; }
+    .timeline-heading span { color:#87938c; font-size:9px; }
+    .timeline { position:relative; display:grid; grid-template-columns:repeat(7, minmax(72px,1fr)); gap:4px; }
+    .timeline::before { content:""; position:absolute; left:21px; right:21px; top:12px; height:1px; background:#e1e8e0; z-index:0; }
+    .step { position:relative; z-index:1; min-width:0; }
+    .step-marker { width:24px; height:24px; display:grid; place-items:center; border-radius:50%; color:#98a49b; border:1px solid #dde5dd; background:#fff; font-size:8px; font-weight:800; transition:all .2s ease; }
+    .step.done .step-marker { color:#fff; border-color:var(--green); background:var(--green); box-shadow:0 0 0 4px #e8f3e9; }
+    .step.active .step-marker { color:#234b3c; border-color:#b7d77d; background:var(--lime); box-shadow:0 0 0 4px #f1f7e4; animation:pulse .9s ease-in-out infinite alternate; }
+    .step-title { margin-top:8px; font-size:8px; line-height:1.35; color:#607168; font-weight:690; }
+    .step.done .step-title { color:#355747; }
+    .step-detail { display:none; }
+    .workflow-detail { display:flex; align-items:flex-start; gap:9px; padding:11px 12px; margin-top:13px; border:1px solid #e8eee6; border-radius:11px; background:#f9fbf8; color:#65746b; font-size:9px; line-height:1.55; min-height:42px; }
+    .workflow-detail b { color:#3d594a; white-space:nowrap; }
+    .workflow-detail .detail-dot { width:7px; height:7px; flex:0 0 auto; margin-top:3px; border-radius:50%; background:#adc487; }
+    .demo-note { display:flex; gap:8px; align-items:center; margin-top:13px; color:#89958d; font-size:9px; line-height:1.5; }
+    .demo-note svg { flex:0 0 auto; }
+
+    .process-section { padding:8px 0 86px !important; }
+    .three-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .process-card { padding:21px; background:#fff; border:1px solid var(--line); border-radius:17px; box-shadow:var(--small-shadow); }
+    .process-number { width:31px; height:31px; display:grid; place-items:center; border-radius:10px; color:#346349; background:#edf5e6; font-size:11px; font-weight:850; }
+    .process-card h3 { margin:17px 0 8px; font-size:15px; letter-spacing:-.035em; }
+    .process-card p { margin:0; color:var(--muted); font-size:11px; line-height:1.65; }
+
+    .offer-section { padding:40px 0 85px; }
+    .offer-card { overflow:hidden; display:grid; grid-template-columns:1.05fr .95fr; border:1px solid #dce8dc; border-radius:25px; background:#edf4e8; }
+    .offer-copy { padding:35px 36px; }
+    .offer-copy h2 { max-width:480px; font-size:34px; line-height:1.04; letter-spacing:-.055em; margin:13px 0 12px; }
+    .offer-copy > p { max-width:495px; font-size:12px; color:#64756a; line-height:1.7; margin:0 0 23px; }
+    .offer-list { display:grid; gap:12px; }
+    .offer-item { display:flex; gap:10px; align-items:flex-start; color:#465b4e; font-size:11px; line-height:1.5; }
+    .offer-item .check { flex:0 0 auto; margin-top:0; }
+    .price-side { padding:29px; background:#fff; border:1px solid #e3eae1; border-radius:19px; margin:20px; display:flex; flex-direction:column; justify-content:center; }
+    .price-tag { color:#638270; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.12em; }
+    .price { margin:12px 0 0; font-size:36px; line-height:1; letter-spacing:-.06em; font-weight:820; }
+    .price span { font-size:12px; color:#718078; letter-spacing:0; font-weight:650; }
+    .price-sub { color:#738179; font-size:10px; margin:8px 0 18px; }
+    .price-divider { height:1px; background:#edf0eb; margin-bottom:16px; }
+    .price-side ul { margin:0 0 18px; padding:0; list-style:none; display:grid; gap:10px; }
+    .price-side li { display:flex; align-items:flex-start; gap:8px; color:#55685d; font-size:10px; line-height:1.4; }
+    .price-side li svg { flex:0 0 auto; color:#42815d; }
+    .price-foot { color:#89958e; font-size:9px; line-height:1.55; margin-top:12px; }
+    .footer { padding:22px 0 29px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:20px; color:#78867e; font-size:10px; }
+    .footer strong { color:#506157; }
+    .footer a { text-decoration:none; color:#607368; }
+    .toast { position:fixed; z-index:10; right:20px; bottom:20px; max-width:min(370px, calc(100vw - 40px)); padding:12px 15px; border-radius:12px; background:#183d31; color:#fff; box-shadow:0 10px 35px rgba(18,51,40,.25); font-size:11px; line-height:1.5; opacity:0; transform:translateY(10px); pointer-events:none; transition:all .24s ease; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid rgba(50,129,94,.28); outline-offset:2px; }
+    @keyframes pulse { from { transform:scale(1); } to { transform:scale(1.1); } }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns:1fr; gap:34px; padding-top:55px; }
+      .hero-copy { max-width:720px; }
+      .hero-art { max-width:650px; width:100%; }
+      .demo-shell { grid-template-columns:300px minmax(0,1fr); }
+      .timeline { grid-template-columns:repeat(4,minmax(75px,1fr)); row-gap:14px; }
+      .timeline::before { display:none; }
+      .step-title { max-width:90px; }
+      .offer-card { grid-template-columns:1fr; }
+      .price-side { margin:0 20px 20px; }
+    }
+    @media (max-width: 680px) {
+      .wrap { width:min(100% - 28px, 560px); }
+      .topbar { height:66px; }
+      .nav-links, .preview-pill { display:none; }
+      .nav-right .button { min-height:37px; padding:0 11px; font-size:10px; }
+      .hero { padding:47px 0 46px; }
+      .hero h1 { font-size:clamp(40px, 12vw, 58px); }
+      .hero-copy > p { font-size:14px; }
+      .hero-art { padding:18px; min-height:0; }
+      .trust-strip { align-items:flex-start; flex-direction:column; margin-bottom:56px; }
+      .trust-items { gap:12px 17px; }
+      .section-heading { display:block; }
+      .section-heading .demo-badge { margin-top:17px; }
+      .demo-shell { grid-template-columns:1fr; }
+      .form-panel { padding:18px; }
+      .console-head { align-items:flex-start; padding:16px; }
+      .console-controls { flex-direction:column; align-items:stretch; }
+      .console-controls .button { white-space:nowrap; }
+      .console-body { padding:14px; }
+      .stats-row { gap:6px; }
+      .stat { padding:9px; }
+      .stat-value { font-size:14px; }
+      .timeline { grid-template-columns:repeat(4,minmax(58px,1fr)); }
+      .step-title { font-size:7px; }
+      .lead-source { display:none; }
+      .three-cards { grid-template-columns:1fr; }
+      .process-section { padding-bottom:58px !important; }
+      .offer-section { padding-top:10px; padding-bottom:60px; }
+      .offer-copy { padding:25px 21px; }
+      .offer-copy h2 { font-size:29px; }
+      .price-side { margin:0 12px 12px; padding:23px 19px; }
+      .footer { align-items:flex-start; flex-direction:column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    }
+    #audit { scroll-margin-top: 24px; }
+    .audit-section { padding: 0 0 78px; }
+    .audit-shell { display:grid; grid-template-columns:.82fr 1.18fr; gap:16px; align-items:stretch; }
+    .audit-intro { position:relative; overflow:hidden; padding:28px; border-radius:21px; background:var(--green-dark); color:#fff; }
+    .audit-intro::after { content:""; position:absolute; width:210px; height:210px; border-radius:50%; background:rgba(201,239,115,.1); right:-98px; bottom:-92px; }
+    .audit-flag { display:inline-flex; align-items:center; gap:7px; color:#d9f09d; font-size:9px; letter-spacing:.13em; font-weight:820; text-transform:uppercase; }
+    .audit-flag .tiny-dot { width:6px; height:6px; background:var(--lime); box-shadow:none; }
+    .audit-intro h2 { position:relative; z-index:1; margin:18px 0 12px; font-size:clamp(26px,3vw,34px); letter-spacing:-.055em; line-height:1.06; }
+    .audit-intro p { position:relative; z-index:1; margin:0; color:#d1ded5; font-size:12px; line-height:1.7; }
+    .audit-includes { position:relative; z-index:1; display:grid; gap:12px; margin-top:23px; }
+    .audit-includes span { display:flex; align-items:flex-start; gap:8px; color:#eaf2e9; font-size:10px; line-height:1.45; }
+    .audit-includes i { color:var(--lime); font-style:normal; font-weight:900; }
+    .audit-intro small { position:relative; z-index:1; display:block; margin-top:20px; color:#a8c0b2; font-size:9px; line-height:1.6; }
+    .audit-panel { padding:22px; }
+    .audit-panel h3 { margin:0 0 6px; font-size:17px; letter-spacing:-.04em; }
+    .audit-panel .intro-copy { margin:0 0 17px; color:var(--muted); font-size:10px; line-height:1.55; }
+    .audit-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 11px; }
+    .audit-grid .field.full { grid-column:1/-1; }
+    .audit-panel .field { margin-bottom:10px; }
+    .audit-panel .field input, .audit-panel .field select { padding:10px 10px; }
+    .audit-panel .button { min-height:42px; font-size:11px; }
+    .audit-privacy { margin:10px 0 0; color:#89958e; font-size:9px; line-height:1.5; }
+    .audit-results { display:none; border-top:1px solid #edf0eb; margin-top:18px; padding-top:17px; }
+    .audit-results.show { display:block; }
+    .audit-results-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .audit-results h4 { margin:0; font-size:14px; letter-spacing:-.03em; }
+    .audit-count { flex:0 0 auto; padding:7px 9px; border-radius:9px; background:#fff4e6; color:#94612d; font-size:9px; font-weight:800; }
+    .audit-findings { display:grid; gap:8px; margin:13px 0; }
+    .audit-finding { display:flex; align-items:flex-start; gap:9px; border:1px solid #e9eee7; border-radius:11px; padding:10px; background:#fbfcfa; }
+    .audit-finding-icon { width:20px; height:20px; flex:0 0 auto; display:grid; place-items:center; border-radius:7px; background:#edf5e6; color:#44704e; font-size:10px; font-weight:900; }
+    .audit-finding strong { display:block; color:#3c5547; font-size:10px; margin-bottom:3px; }
+    .audit-finding span { display:block; color:#728078; font-size:9px; line-height:1.5; }
+    .audit-route-status { margin:10px 0; padding:10px 11px; border-radius:10px; background:#f4f7f1; color:#68776e; font-size:9px; line-height:1.5; }
+    .audit-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .audit-actions .button { min-height:37px; padding:0 12px; }
+    .audit-method { margin:11px 0 0; color:#8a968f; font-size:8px; line-height:1.55; }
+    .audit-results[hidden], .audit-panel [hidden] { display:none !important; }
+    .personalized-label { display:none; align-items:center; gap:7px; color:#436e50; font-size:9px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .personalized-label.show { display:inline-flex; }
+    @media (max-width: 900px) {
+      .audit-shell { grid-template-columns:1fr; }
+      .audit-intro { min-height:0; }
+    }
+    @media (max-width: 680px) {
+      .audit-section { padding-bottom:58px; }
+      .audit-intro { padding:23px 21px; }
+      .audit-panel { padding:18px; }
+      .audit-grid { grid-template-columns:1fr; }
+      .audit-grid .field.full { grid-column:auto; }
+      .audit-results-head { display:block; }
+      .audit-count { display:inline-flex; margin-top:9px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="KoZ Lead Rescue home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 4.5h4.4v5.4l5.3-5.4h5.4l-7.2 7.2 7.5 8h-5.8l-5.2-5.7v5.7H6V4.5Z" fill="currentColor"/><path d="M3.1 4.5h1.5v15H3.1z" fill="currentColor" opacity=".48"/></svg>
+        </span>
+        <span class="brand-word">KoZ <span style="font-weight:560">Lead Rescue</span><small>FAST RESPONSE. FEWER LOST LEADS.</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#audit" data-audit-purpose="audit">Free lead-loss audit</a>
+        <a href="#demo">Interactive demo</a>
+        <a href="#pilot">$299 pilot</a>
+      </nav>
+      <div class="nav-right">
+        <span class="preview-pill"><span class="tiny-dot"></span> Interactive preview</span>
+        <a class="button button-dark" href="#audit" data-audit-purpose="audit">Get a free audit <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <span class="eyebrow" id="heroEyebrow"><span class="tiny-dot"></span><span id="heroEyebrowText">AI-assisted lead response for local contractors</span></span>
+          <h1 id="hero-title"><span id="heroPrefix">Every new lead gets an answer.</span> <span class="highlight" id="heroHighlight">Even after hours.</span></h1>
+          <p id="heroSubtitle">KoZ Lead Rescue is an AI-assisted workflow for website inquiries: it acknowledges the request, organizes the details your team needs, and keeps follow-up from slipping through the cracks. Your team stays in control of estimates, availability, and the final customer decision.</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#audit" data-audit-purpose="audit">Get my free lead-loss audit <span aria-hidden="true">→</span></a>
+            <a class="button button-light" href="#demo">See the interactive demo</a>
+          </div>
+          <div class="fine-line">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.5 8.2 2.8 2.7 6.2-6.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Free written audit. No sales call required.
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of an inquiry being answered and routed">
+          <div class="mock-top">
+            <div class="mock-title"><span class="mock-avatar"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="m2 7 6-4 6 4v6H2V7Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 13V9h4v4" stroke="currentColor" stroke-width="1.3"/></svg></span> Lead response preview</div>
+            <span class="mock-label">SAMPLE FLOW</span>
+          </div>
+          <div class="mock-card">
+            <div class="mock-card-top">
+              <div><h3 id="heroSampleTitle">New roof repair inquiry</h3><p id="heroSampleDescription">Received through the contractor's website form</p></div>
+              <span class="status-tag"><span class="tiny-dot"></span> Ready to respond</span>
+            </div>
+            <div class="reply-bubble" id="heroReplyBubble">Thanks for reaching out. We received your request and will have the team review the details. When did you first notice the issue?</div>
+            <div class="reply-meta"><span class="tiny-dot" style="width:6px;height:6px"></span><strong>Response prepared</strong> · sample message, not sent</div>
+            <div class="mini-flow">
+              <div class="mini-step"><b>01 · Capture</b><span>Inquiry details collected</span></div>
+              <div class="mini-step"><b>02 · Qualify</b><span>Need and urgency organized</span></div>
+              <div class="mini-step"><b>03 · Follow up</b><span>Owner gets the next step</span></div>
+            </div>
+          </div>
+          <div class="mock-foot"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 13 4v3.4c0 3.1-2 5.3-5 6.8-3-1.5-5-3.7-5-6.8V4l5-2.2Z" stroke="currentColor" stroke-width="1.2"/><path d="m5.8 7.9 1.5 1.4 2.9-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> No estimates, availability, or promises are made without the contractor.</div>
+        </div>
+      </section>
+
+      <div class="trust-strip" aria-label="Product principles">
+        <div class="trust-lead">A focused first version</div>
+        <div class="trust-items">
+          <span><i class="check">✓</i> Fast acknowledgement</span>
+          <span><i class="check">✓</i> Cleaner lead details</span>
+          <span><i class="check">✓</i> Owner stays in control</span>
+          <span><i class="check">✓</i> No new CRM required</span>
+        </div>
+      </div>
+
+      <section class="audit-section" id="audit" aria-labelledby="audit-title">
+        <div class="audit-shell">
+          <div class="audit-intro">
+            <span class="audit-flag"><span class="tiny-dot"></span> Free · written · no call</span>
+            <h2 id="audit-title">Find the spots where a good lead may be slipping away.</h2>
+            <p>Share a few basics about your inquiry process. KoZ will prepare a quick first-pass checklist, then a human can review your public lead path and send specific notes in writing.</p>
+            <div class="audit-includes">
+              <span><i>✓</i> Response-time and after-hours gaps to check</span>
+              <span><i>✓</i> Follow-up and appointment handoff review</span>
+              <span><i>✓</i> A practical first fix—not an AI sales pitch</span>
+            </div>
+            <small>No cold call. No payment details. The quick check is based on your answers; a human review is needed before making claims about your website.</small>
+          </div>
+          <div class="panel audit-panel">
+            <form id="auditForm">
+              <h3 id="auditFormTitle">Request your free lead-loss audit</h3>
+              <p class="intro-copy">About one minute. The form prepares a written request; it does not submit anything to a server.</p>
+              <div class="audit-grid">
+                <div class="field">
+                  <label for="auditBusiness">Business name</label>
+                  <input id="auditBusiness" name="business" autocomplete="organization" placeholder="e.g. Ridgeview Plumbing" required maxlength="70">
+                </div>
+                <div class="field">
+                  <label for="auditEmail">Your email</label>
+                  <input id="auditEmail" name="email" type="email" autocomplete="email" placeholder="you@business.com" required maxlength="120">
+                </div>
+                <div class="field full">
+                  <label for="auditWebsite">Website</label>
+                  <input id="auditWebsite" name="website" type="url" placeholder="https://yourbusiness.com" required maxlength="200">
+                </div>
+                <div class="field">
+                  <label for="auditResponse">How quickly do new inquiries get a reply?</label>
+                  <select id="auditResponse" name="response" required>
+                    <option value="" selected disabled>Choose one</option>
+                    <option value="under5">Usually within 5 minutes</option>
+                    <option value="within_hour">Usually within an hour</option>
+                    <option value="same_day">Later the same day</option>
+                    <option value="unsure">No consistent target / not sure</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="auditAfterHours">What happens after hours?</label>
+                  <select id="auditAfterHours" name="afterHours" required>
+                    <option value="" selected disabled>Choose one</option>
+                    <option value="covered">A reply or clear next step is covered</option>
+                    <option value="partial">Sometimes covered</option>
+                    <option value="uncovered">Usually waits until we're back</option>
+                    <option value="unsure">Not sure</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="auditFollowup">If they don't reply, what follow-up happens?</label>
+                  <select id="auditFollowup" name="followup" required>
+                    <option value="" selected disabled>Choose one</option>
+                    <option value="three_plus">Three or more planned attempts</option>
+                    <option value="one_two">One or two attempts</option>
+                    <option value="none">No consistent follow-up</option>
+                    <option value="unsure">Not sure</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="auditNextStep">How does a lead request an appointment?</label>
+                  <select id="auditNextStep" name="nextStep" required>
+                    <option value="" selected disabled>Choose one</option>
+                    <option value="online">Clear online booking or visit request</option>
+                    <option value="manual">Owner follows up to coordinate</option>
+                    <option value="unclear">No standard next step</option>
+                    <option value="unsure">Not sure</option>
+                  </select>
+                </div>
+              </div>
+              <button class="button button-dark" type="submit"><span id="auditSubmitText">Prepare my free audit</span> <span aria-hidden="true">→</span></button>
+              <p class="audit-privacy">Your answers stay in this browser until you choose to copy or email the request. Don't include customer names or sensitive information.</p>
+            </form>
+            <div class="audit-results" id="auditResults" aria-live="polite">
+              <div class="audit-results-head">
+                <div><h4 id="auditResultTitle">Your first-pass audit brief</h4><p class="intro-copy" id="auditResultIntro" style="margin:5px 0 0"></p></div>
+                <span class="audit-count" id="auditCount">0 areas to check</span>
+              </div>
+              <div class="audit-findings" id="auditFindings"></div>
+              <div class="audit-route-status" id="auditRouteStatus"></div>
+              <div class="audit-actions">
+                <a class="button button-dark" id="emailAuditButton" href="#" hidden>Email KoZ to request the written audit</a>
+                <button class="button button-dark" type="button" id="copyAuditButton">Copy my audit request</button>
+                <button class="button button-light" type="button" id="editAuditButton">Edit answers</button>
+              </div>
+              <p class="audit-method">This first-pass checklist is generated from the answers above—not from a website crawl or verified performance data. The free written audit is a separate human review.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="demo" aria-labelledby="demo-title">
+        <div class="section-heading">
+          <div>
+            <span class="personalized-label" id="personalizedLabel"></span>
+            <span class="eyebrow">See the workflow, not a sales pitch</span>
+            <h2 id="demo-title">Try a lead from first click to follow-up.</h2>
+            <p>Submit the sample inquiry or play the walkthrough. Watch the details appear in the contractor's lead desk, along with a response preview and the next actions.</p>
+          </div>
+          <span class="demo-badge"><span class="tiny-dot" style="background:#d59248;box-shadow:0 0 0 3px rgba(213,146,72,.14)"></span> Browser-only simulation · nothing is sent</span>
+        </div>
+
+        <div class="demo-shell">
+          <form class="panel form-panel" id="leadForm">
+            <div class="panel-kicker"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.3 3.2h11.4v8H8l-3.4 2.2v-2.2H2.3v-8Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 6h6M5 8.4h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Homeowner view</div>
+            <h3 class="panel-title">Send a sample inquiry</h3>
+            <p class="panel-desc">Edit the example or leave it as-is. The information stays in this browser tab.</p>
+
+            <div class="field">
+              <label for="customerName">Your name</label>
+              <input id="customerName" name="customerName" autocomplete="name" value="Taylor Reed" required maxlength="70">
+            </div>
+            <div class="field">
+              <label for="contact">Phone or email</label>
+              <input id="contact" name="contact" value="taylor@example.com" placeholder="For this demo only" maxlength="100">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="zip">ZIP code</label>
+                <input id="zip" name="zip" inputmode="numeric" value="07860" maxlength="10" required>
+              </div>
+              <div class="field">
+                <label for="service">What do you need?</label>
+                <select id="service" name="service">
+                  <option>Roof repair</option>
+                  <option>Roof replacement</option>
+                  <option>Gutter service</option>
+                  <option>Siding</option>
+                  <option>Other exterior work</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="urgency">How soon?</label>
+              <select id="urgency" name="urgency">
+                  <option>Active issue / urgent</option>
+                <option>Need a quote this week</option>
+                <option>Planning ahead</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="details">A few details</label>
+              <textarea id="details" name="details" maxlength="350">Water stain appeared after last night's rain. Could someone take a look?</textarea>
+            </div>
+            <div class="field">
+              <label for="preferred">Best time for a visit</label>
+              <select id="preferred" name="preferred">
+                <option>Next available weekday morning</option>
+                <option>Weekday afternoon</option>
+                <option>I would like a call first</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <button class="button button-dark submit-button" type="submit">Run this inquiry <span aria-hidden="true">→</span></button>
+            <div class="form-privacy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.2 6.8V5.1a3.8 3.8 0 0 1 7.6 0v1.7M3 6.8h10v7H3v-7Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="8" cy="10.1" r=".8" fill="currentColor"/></svg> Browser-only preview: this does not send texts or emails or store your entry on a server.</div>
+          </form>
+
+          <div class="panel console" aria-live="polite">
+            <div class="console-head">
+              <div class="account">
+                <span class="account-mark"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m2.2 8.6 7.8-5.4 7.8 5.4v8.1H2.2V8.6Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7.1 16.7v-5.3h5.8v5.3M5.4 8.7h9.2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+                <span><span class="account-name" id="businessName">Pine &amp; Peak Roofing</span><span class="account-sub" id="accountSub">Fictional sample contractor · North Jersey</span></span>
+              </div>
+              <div class="console-controls">
+                <button class="button button-light" type="button" id="replayButton" title="Replay the current lead workflow">↻ Replay flow</button>
+                <button class="button button-lime" type="button" id="sampleButton">Use sample lead</button>
+              </div>
+            </div>
+            <div class="console-body">
+              <div class="stats-row">
+                <div class="stat"><div class="stat-label">Demo leads</div><div class="stat-value" id="leadCount">01 <small>sample</small></div></div>
+                <div class="stat"><div class="stat-label">Workflow</div><div class="stat-value" id="workflowStatus">Ready</div></div>
+                <div class="stat"><div class="stat-label">Next action</div><div class="stat-value" id="nextAction">Review</div></div>
+              </div>
+              <div class="lead-overview">
+                <div class="lead-identity">
+                  <span class="lead-avatar" id="leadInitials">TR</span>
+                  <span><span class="lead-name" id="displayName">Taylor Reed</span><span class="lead-sub" id="displayService">Roof repair · Active issue / urgent · ZIP 07860</span></span>
+                </div>
+                <span class="lead-source" id="displaySource">WEBSITE FORM · SAMPLE</span>
+              </div>
+              <div class="conversation">
+                <div class="conversation-head"><strong>Response preview</strong><span id="channelLabel">Approved template · sample only</span></div>
+                <div class="conversation-body">
+                  <div class="incoming-bubble" id="incomingMessage">Water stain appeared after last night's rain. Could someone take a look?</div>
+                  <div class="outgoing-bubble" id="responseMessage">Hi Taylor, thanks for contacting Pine &amp; Peak Roofing. We received your roof repair request. Could you share when you first noticed the issue? Our team will review the details and follow up about a visit.</div>
+                  <div class="bubble-label">Draft response · not sent</div>
+                </div>
+              </div>
+              <div class="timeline-wrap">
+                <div class="timeline-heading"><strong>Lead journey</strong><span id="timelineProgress">7 steps · ready to replay</span></div>
+                <div class="timeline" id="timeline" role="list" aria-label="Lead response workflow"></div>
+                <div class="workflow-detail" id="workflowDetail"><span class="detail-dot"></span><span><b>Ready to demonstrate.</b> Choose “Run this inquiry” or replay the sample flow to watch each stage.</span></div>
+              </div>
+              <div class="demo-note"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.2"/><path d="M8 7.2v3.3M8 4.9h.01" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Sales preview only: no live AI model or messages are connected. A pilot requires approved templates, consent, and the agreed integrations.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section process-section" id="how-it-works" aria-labelledby="process-title">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Small, useful, measurable</span>
+            <h2 id="process-title">One simple loop. No new CRM required.</h2>
+            <p>Start with a single website inquiry path. The contractor keeps control of pricing, availability, and the final customer conversation.</p>
+          </div>
+        </div>
+        <div class="three-cards">
+          <article class="process-card"><span class="process-number">01</span><h3>Capture &amp; acknowledge</h3><p>A new web inquiry receives a prompt, branded acknowledgement and a clear expectation for what happens next.</p></article>
+          <article class="process-card"><span class="process-number">02</span><h3>Qualify &amp; route</h3><p>Service type, location, urgency, and preferred visit window are summarized for the owner—without inventing estimates.</p></article>
+          <article class="process-card"><span class="process-number">03</span><h3>Follow through</h3><p>If the prospect goes quiet, approved reminders can follow. Appointment requests go to the team to confirm.</p></article>
+        </div>
+      </section>
+
+      <section class="offer-section" id="pilot" aria-labelledby="pilot-title">
+        <div class="offer-card">
+          <div class="offer-copy">
+            <span class="eyebrow">Founding-customer pilot</span>
+            <h2 id="pilot-title">A focused lead-rescue setup for one contractor.</h2>
+            <p>Prove the first workflow before adding dashboards, agents, or extra integrations. Keep AI narrow: classify and summarize from approved rules, use owner-approved message templates, and route uncertain cases to a person.</p>
+            <div class="offer-list">
+              <div class="offer-item"><i class="check">✓</i><span>Connect one website inquiry source and configure one service team's workflow.</span></div>
+              <div class="offer-item"><i class="check">✓</i><span>Use AI-assisted lead categorization and summaries, with a branded acknowledgement based on an approved template.</span></div>
+              <div class="offer-item"><i class="check">✓</i><span>Set up up to three consent-aware follow-up reminders and an appointment-request handoff.</span></div>
+              <div class="offer-item"><i class="check">✓</i><span>Test the flow with the owner, then launch with a simple written handoff guide.</span></div>
+            </div>
+          </div>
+          <div class="price-side">
+            <div class="price-tag">Founding pilot price</div>
+            <div class="price">$299 <span>setup</span></div>
+            <div class="price-sub">then <strong>$99 / month</strong> for basic monitoring and support</div>
+            <div class="price-divider"></div>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.2 8.2 2.7 2.6 6.8-6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>One intake source · one business · one workflow</li>
+              <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.2 8.2 2.7 2.6 6.8-6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Owner confirms all pricing and appointment availability</li>
+              <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.2 8.2 2.7 2.6 6.8-6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Third-party messaging usage billed separately, if enabled</li>
+            </ul>
+            <a class="button button-dark" href="#audit" id="pilotRequestButton" data-intent="pilot">Request the $299 pilot <span aria-hidden="true">→</span></a>
+            <div class="price-foot">Scope is limited to the single workflow above. Third-party usage is billed separately; SMS requires appropriate consent and setup. This page is an interactive preview—no live AI, messages, or checkout is connected.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="wrap footer">
+    <span><strong>KoZ Lead Rescue</strong> · A small first step toward fewer missed inquiries.</span>
+    <span>Interactive sales preview · No real messages are sent or data stored on a server.</span>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const timelineEl = $('timeline');
+      const AUDIT_INBOX = ''; // Add the KoZ inbox here before publishing to enable email requests.
+      const params = new URLSearchParams(window.location.search);
+      const cleanParam = (key, max = 80) => String(params.get(key) || '').trim().slice(0, max);
+      const tradeProfiles = {
+        roofing: { label: 'Roofing', service: 'Roof repair', services: ['Roof repair', 'Roof replacement', 'Gutter service', 'Siding', 'Other exterior work'], details: "Water stain appeared after last night's rain. Could someone take a look?" },
+        plumbing: { label: 'Plumbing', service: 'Leak repair', services: ['Leak repair', 'Drain clearing', 'Water heater', 'Fixture installation', 'Other plumbing'], details: 'A pipe under the kitchen sink is leaking. Could someone advise on a visit?' },
+        hvac: { label: 'Heating & cooling', service: 'Heating / cooling repair', services: ['No heat / no cooling', 'System repair', 'Maintenance / tune-up', 'Replacement quote', 'Other HVAC'], details: 'The system is not keeping the house comfortable. I would like to arrange a service visit.' },
+        electrical: { label: 'Electrical', service: 'Electrical repair', services: ['Electrical repair', 'Lighting', 'Panel / breaker issue', 'Installation quote', 'Other electrical'], details: 'A breaker keeps tripping in one room. Could someone take a look?' },
+        gutters: { label: 'Gutters & exterior', service: 'Gutter repair', services: ['Gutter repair', 'Gutter cleaning', 'Downspout issue', 'Gutter installation', 'Other exterior work'], details: 'A downspout came loose during the last storm. Could someone review the repair?' },
+        general: { label: 'Home services', service: 'Service repair', services: ['Service repair', 'Replacement quote', 'Maintenance', 'Urgent request', 'Other service'], details: 'I would like help with a home-service project and a visit estimate.' }
+      };
+      const tradeKeyRaw = cleanParam('trade', 24).toLowerCase();
+      const tradeKey = Object.prototype.hasOwnProperty.call(tradeProfiles, tradeKeyRaw) ? tradeKeyRaw : 'roofing';
+      const tradeProfile = tradeProfiles[tradeKey];
+      const companyParam = cleanParam('company', 70);
+      const displayedBusinessName = companyParam || 'Pine & Peak Roofing';
+      const serviceArea = cleanParam('area', 70);
+      const focusValues = { response: 'first-response speed', 'after-hours': 'after-hours coverage', qualification: 'lead qualification', 'follow-up': 'consistent follow-up' };
+      const focusKey = cleanParam('focus', 30).toLowerCase();
+      const focusLabel = focusValues[focusKey] || 'lead response and follow-up';
+      const zipParam = cleanParam('zip', 10);
+      const sampleZip = /^[0-9]{5}(-[0-9]{4})?$/.test(zipParam) ? zipParam : '07860';
+      const rawWebsite = cleanParam('website', 200);
+      let sampleWebsite = '';
+      try { const candidate = new URL(rawWebsite); if (candidate.protocol === 'https:' || candidate.protocol === 'http:') sampleWebsite = candidate.href; } catch (_) {}
+      let auditPurpose = 'audit';
+      let auditRequestText = '';
+      const details = [
+        { title: 'Inquiry received', detail: 'A new website inquiry is captured with the customer’s contact details and request.' },
+        { title: 'Acknowledged', detail: 'A contractor-approved response is prepared promptly. In a live setup, delivery depends on the connected channel.' },
+        { title: 'Qualified', detail: 'Service need, urgency, and service-area ZIP are organized for the owner.' },
+        { title: 'Owner alerted', detail: 'The contractor receives a concise lead summary and a clear next action.' },
+        { title: 'Visit requested', detail: 'The preferred window is recorded as a request. The owner confirms availability before anything is booked.' },
+        { title: 'Follow-up queued', detail: 'If the lead does not reply, up to three approved reminders can be scheduled.' },
+        { title: 'After-service touchpoint', detail: 'Once the job is marked complete, an optional thank-you or review request can be sent with approval.' }
+      ];
+      const sampleLead = {
+        name: 'Taylor Reed', contact: 'taylor@example.com', zip: sampleZip, service: tradeProfile.service,
+        urgency: 'Active issue / urgent', details: tradeProfile.details,
+        preferred: 'Next available weekday morning'
+      };
+      let currentLead = { ...sampleLead };
+      let timerIds = [];
+      let toastTimer;
+      let submittedCount = 0;
+      let activeStep = -1;
+      let complete = true;
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+      }
+      function initials(name) {
+        return String(name || 'New Lead').trim().split(/\s+/).slice(0, 2).map(part => part.charAt(0).toUpperCase()).join('') || 'NL';
+      }
+      function updateResponse(lead) {
+        const first = (lead.name || 'there').trim().split(/\s+/)[0];
+        const service = (lead.service || 'service').toLowerCase();
+        let extra = 'Could you share a little more about the issue? Our team will review the details and follow up about your preferred visit time.';
+        if ((lead.urgency || '').toLowerCase().includes('urgent')) {
+          extra = 'We have flagged the urgency for the team. If the issue is causing immediate damage, please contact the business using its published details for the fastest help. The team will review your request and follow up.';
+        } else if ((lead.urgency || '').toLowerCase().includes('planning')) {
+          extra = 'When would you ideally like the work done? Our team will review the details and follow up about next steps.';
+        }
+        $('responseMessage').textContent = `Hi ${first}, thanks for contacting ${displayedBusinessName}. We received your ${service} request. ${extra}`;
+        $('incomingMessage').textContent = lead.details || `${lead.service} inquiry from ZIP ${lead.zip}.`;
+      }
+      function renderTimeline() {
+        timelineEl.innerHTML = details.map((item, index) => {
+          let status = '';
+          if (complete || index < activeStep) status = 'done';
+          else if (index === activeStep) status = 'active';
+          return `<div class="step ${status}" role="listitem" aria-label="Step ${index + 1}: ${escapeHtml(item.title)}${status ? ', ' + status : ', pending'}"><span class="step-marker">${status === 'done' ? '✓' : String(index + 1).padStart(2, '0')}</span><div class="step-title">${escapeHtml(item.title)}</div></div>`;
+        }).join('');
+      }
+      function setDetail(index, isFinal = false) {
+        const box = $('workflowDetail');
+        if (isFinal) {
+          box.innerHTML = '<span class="detail-dot"></span><span><b>Walkthrough complete.</b> The full sample flow was previewed. In a real installation, each send and integration would be configured and tested with the contractor.</span>';
+          return;
+        }
+        const step = details[index];
+        if (!step) {
+          box.innerHTML = '<span class="detail-dot"></span><span><b>Ready to demonstrate.</b> Choose “Run this inquiry” or replay the sample flow to watch each stage.</span>';
+          return;
+        }
+        box.innerHTML = `<span class="detail-dot"></span><span><b>${escapeHtml(step.title)}.</b> ${escapeHtml(step.detail)}</span>`;
+      }
+      function setCurrentLead(lead, isNew) {
+        currentLead = { ...lead };
+        $('leadInitials').textContent = initials(lead.name);
+        $('displayName').textContent = lead.name || 'New lead';
+        $('displayService').textContent = `${lead.service || 'Service request'} · ${lead.urgency || 'Urgency not specified'} · ZIP ${lead.zip || '—'}`;
+        $('displaySource').textContent = isNew ? 'WEBSITE FORM · TEST INQUIRY' : (companyParam ? 'WEBSITE FORM · CUSTOM DEMO' : 'WEBSITE FORM · SAMPLE');
+        updateResponse(lead);
+      }
+      function clearTimers() {
+        timerIds.forEach(clearTimeout);
+        timerIds = [];
+      }
+      function showToast(message) {
+        const toast = $('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 3600);
+      }
+      function runWorkflow(lead, isNew = false) {
+        clearTimers();
+        setCurrentLead(lead, isNew);
+        complete = false;
+        activeStep = 0;
+        $('workflowStatus').textContent = 'Running';
+        $('nextAction').textContent = 'Capture';
+        $('timelineProgress').textContent = 'Step 1 of 7 · simulating';
+        renderTimeline();
+        setDetail(0);
+        const nextNames = ['Capture', 'Respond', 'Qualify', 'Notify', 'Request', 'Follow up', 'Review'];
+        for (let i = 1; i < details.length; i++) {
+          const id = setTimeout(() => {
+            activeStep = i;
+            $('nextAction').textContent = nextNames[i];
+            $('timelineProgress').textContent = `Step ${i + 1} of 7 · simulating`;
+            renderTimeline();
+            setDetail(i);
+          }, i * 780);
+          timerIds.push(id);
+        }
+        const finish = setTimeout(() => {
+          complete = true;
+          activeStep = details.length - 1;
+          $('workflowStatus').textContent = 'Complete';
+          $('nextAction').textContent = 'Owner review';
+          $('timelineProgress').textContent = '7 steps · preview complete';
+          renderTimeline();
+          setDetail(details.length - 1, true);
+          showToast('Walkthrough complete. No real text or email was sent.');
+        }, details.length * 780);
+        timerIds.push(finish);
+      }
+      function prefillForm(lead) {
+        $('customerName').value = lead.name;
+        $('contact').value = lead.contact;
+        $('zip').value = lead.zip;
+        $('service').value = lead.service;
+        $('urgency').value = lead.urgency;
+        $('details').value = lead.details;
+        $('preferred').value = lead.preferred;
+      }
+      function useSample() {
+        prefillForm(sampleLead);
+        submittedCount = 0;
+        $('leadCount').innerHTML = companyParam ? '01 <small>preview</small>' : '01 <small>sample</small>';
+        runWorkflow(sampleLead, false);
+      }
+
+      $('leadForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const lead = {
+          name: String(formData.get('customerName') || '').trim(),
+          contact: String(formData.get('contact') || '').trim(),
+          zip: String(formData.get('zip') || '').trim(),
+          service: String(formData.get('service') || '').trim(),
+          urgency: String(formData.get('urgency') || '').trim(),
+          details: String(formData.get('details') || '').trim(),
+          preferred: String(formData.get('preferred') || '').trim()
+        };
+        if (!lead.name || !lead.zip) {
+          showToast('Please add a name and ZIP code to run the sample.');
+          return;
+        }
+        submittedCount += 1;
+        $('leadCount').innerHTML = `${String(submittedCount + 1).padStart(2, '0')} <small>incl. ${companyParam ? 'preview' : 'sample'}</small>`;
+        $('workflowStatus').textContent = 'Running';
+        runWorkflow(lead, true);
+        showToast('Test inquiry created in this browser only.');
+      });
+      $('replayButton').addEventListener('click', () => runWorkflow(currentLead, $('displaySource').textContent.includes('TEST')));
+      $('sampleButton').addEventListener('click', useSample);
+
+      function setupPersonalization() {
+        const isPersonalized = Boolean(companyParam || serviceArea || focusKey || tradeKeyRaw);
+        $('businessName').textContent = displayedBusinessName;
+        $('accountSub').textContent = isPersonalized
+          ? `${tradeProfile.label}${serviceArea ? ` · ${serviceArea}` : ''} · Personalized preview`
+          : 'Fictional sample contractor · North Jersey';
+        $('heroSampleTitle').textContent = `New ${tradeProfile.service.toLowerCase()} inquiry`;
+        $('heroSampleDescription').textContent = `Received through ${displayedBusinessName}'s website form`;
+        $('heroReplyBubble').textContent = `Thanks for contacting ${displayedBusinessName}. We received your ${tradeProfile.service.toLowerCase()} request and will have the team review the details.`;
+        const serviceSelect = $('service');
+        serviceSelect.replaceChildren(...tradeProfile.services.map((service) => {
+          const option = document.createElement('option');
+          option.value = service;
+          option.textContent = service;
+          return option;
+        }));
+        if (companyParam) {
+          $('heroPrefix').textContent = 'A faster first reply for';
+          $('heroHighlight').textContent = companyParam;
+          $('heroEyebrowText').textContent = `Personalized workflow for ${companyParam}`;
+          $('heroSubtitle').textContent = `A tailored ${tradeProfile.label.toLowerCase()} walkthrough for ${companyParam}${serviceArea ? ` in ${serviceArea}` : ''}: see how an AI-assisted workflow could handle ${focusLabel}, organize the inquiry, and route a clear next step to your team. This preview is simulated.`;
+          $('personalizedLabel').textContent = `CUSTOM WALKTHROUGH · ${companyParam}`;
+          $('personalizedLabel').classList.add('show');
+          $('auditBusiness').value = companyParam;
+          document.title = `KoZ Lead Rescue — Preview for ${companyParam}`;
+        }
+        if (sampleWebsite) $('auditWebsite').value = sampleWebsite;
+        if (isPersonalized) {
+          $('displaySource').textContent = 'WEBSITE FORM · CUSTOM DEMO';
+          $('leadCount').innerHTML = '01 <small>preview</small>';
+        }
+        prefillForm(sampleLead);
+      }
+
+      function auditFindings(values) {
+        const responseLabels = { under5: 'usually within 5 minutes', within_hour: 'usually within an hour', same_day: 'later the same day', unsure: 'not consistently measured' };
+        const afterLabels = { covered: 'covered', partial: 'sometimes covered', uncovered: 'usually waiting until business hours', unsure: 'not clearly defined' };
+        const followLabels = { three_plus: 'three or more planned attempts', one_two: 'one or two attempts', none: 'no consistent follow-up', unsure: 'not clearly defined' };
+        const nextLabels = { online: 'a clear online booking or visit request', manual: 'owner follow-up to coordinate', unclear: 'no standard next step', unsure: 'not clearly defined' };
+        return [
+          {
+            title: 'First response', flagged: ['within_hour', 'same_day', 'unsure'].includes(values.response),
+            observed: `You reported that new leads are ${responseLabels[values.response]}.`,
+            action: 'Check actual form timestamps and decide on a simple acknowledgement target, especially for urgent requests.'
+          },
+          {
+            title: 'After-hours coverage', flagged: ['partial', 'uncovered', 'unsure'].includes(values.afterHours),
+            observed: `After-hours inquiries are ${afterLabels[values.afterHours]}.`,
+            action: 'Test the form at night or on a weekend and make sure it sets expectations for the next human response.'
+          },
+          {
+            title: 'Follow-up consistency', flagged: ['one_two', 'none', 'unsure'].includes(values.followup),
+            observed: `When a lead goes quiet, your current process is ${followLabels[values.followup]}.`,
+            action: 'Define a small, approved reminder sequence with clear stop rules when someone replies or opts out.'
+          },
+          {
+            title: 'Appointment handoff', flagged: ['unclear', 'unsure'].includes(values.nextStep),
+            observed: `The next step is ${nextLabels[values.nextStep]}.`,
+            action: 'Make the visit request and owner-confirmation step explicit so a prospect knows what to expect.'
+          }
+        ];
+      }
+
+      function makeAuditRequest(values, findings) {
+        const flagged = findings.filter(item => item.flagged);
+        const labels = {
+          response: { under5: 'Usually within 5 minutes', within_hour: 'Usually within an hour', same_day: 'Later the same day', unsure: 'No consistent target / not sure' },
+          afterHours: { covered: 'A reply or clear next step is covered', partial: 'Sometimes covered', uncovered: 'Usually waits until business hours', unsure: 'Not sure' },
+          followup: { three_plus: 'Three or more planned attempts', one_two: 'One or two attempts', none: 'No consistent follow-up', unsure: 'Not sure' },
+          nextStep: { online: 'Clear online booking or visit request', manual: 'Owner follows up to coordinate', unclear: 'No standard next step', unsure: 'Not sure' }
+        };
+        const answer = (field) => labels[field]?.[values[field]] || values[field];
+        const findingsText = findings.map(item => `- ${item.title}: ${item.observed} Suggested check: ${item.action}`).join('\n');
+        const purposeLine = auditPurpose === 'pilot' ? 'I am interested in the $299 setup + $99/month founding pilot.' : 'I would like the free written lead-loss audit.';
+        const subject = auditPurpose === 'pilot'
+          ? `KoZ Lead Rescue pilot request — ${values.business}`
+          : `Free lead-loss audit request — ${values.business}`;
+        const message = `${purposeLine}\n\nBusiness: ${values.business}\nWebsite: ${values.website}\nContact email: ${values.email}\n\nCurrent workflow (self-reported):\n- First response: ${answer('response')}\n- After hours: ${answer('afterHours')}\n- Follow-up: ${answer('followup')}\n- Appointment next step: ${answer('nextStep')}\n\nFirst-pass checklist (not a website audit):\n${findingsText}\n\nPlease reply in writing. I understand this request is not sent until I press Send in my email app.`;
+        return { subject, message, flaggedCount: flagged.length };
+      }
+
+      function setupAuditForm() {
+        if (companyParam) $('auditBusiness').value = companyParam;
+        if (sampleWebsite) $('auditWebsite').value = sampleWebsite;
+        $('auditForm').addEventListener('submit', (event) => {
+          event.preventDefault();
+          const data = new FormData(event.currentTarget);
+          const values = {
+            business: String(data.get('business') || '').trim(),
+            email: String(data.get('email') || '').trim(),
+            website: String(data.get('website') || '').trim(),
+            response: String(data.get('response') || ''),
+            afterHours: String(data.get('afterHours') || ''),
+            followup: String(data.get('followup') || ''),
+            nextStep: String(data.get('nextStep') || '')
+          };
+          const findings = auditFindings(values);
+          const result = makeAuditRequest(values, findings);
+          $('auditResultTitle').textContent = auditPurpose === 'pilot' ? 'Your pilot request is ready' : `First-pass brief for ${values.business}`;
+          $('auditResultIntro').textContent = 'Based on your answers, here are the first areas to verify—not claims about measured lead loss.';
+          $('auditCount').textContent = result.flaggedCount ? `${result.flaggedCount} potential gap${result.flaggedCount === 1 ? '' : 's'} to review` : 'No obvious gaps in your answers';
+          const findingBox = $('auditFindings');
+          findingBox.replaceChildren();
+          const ordered = [...findings].sort((a, b) => Number(b.flagged) - Number(a.flagged)).slice(0, 3);
+          ordered.forEach((finding) => {
+            const card = document.createElement('div');
+            card.className = 'audit-finding';
+            const icon = document.createElement('i');
+            icon.className = 'audit-finding-icon';
+            icon.textContent = finding.flagged ? '!' : '✓';
+            const copy = document.createElement('div');
+            const title = document.createElement('strong');
+            title.textContent = finding.title;
+            const text = document.createElement('span');
+            text.textContent = `${finding.observed} ${finding.action}`;
+            copy.append(title, text);
+            card.append(icon, copy);
+            findingBox.append(card);
+          });
+          auditRequestText = `${result.subject}\n\n${result.message}`;
+          if (AUDIT_INBOX.trim()) {
+            $('emailAuditButton').href = `mailto:${AUDIT_INBOX.trim()}?subject=${encodeURIComponent(result.subject)}&body=${encodeURIComponent(result.message)}`;
+            $('emailAuditButton').hidden = false;
+            $('auditRouteStatus').textContent = 'Your request is ready in a pre-addressed email draft. It is not sent until you review and press Send.';
+          } else {
+            $('emailAuditButton').hidden = true;
+            $('auditRouteStatus').textContent = 'The written-request inbox has not been connected on this draft. Copy the prepared message; this page does not transmit or store your answers.';
+          }
+          $('auditForm').hidden = true;
+          $('auditResults').classList.add('show');
+          $('auditResults').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        $('copyAuditButton').addEventListener('click', async () => {
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(auditRequestText);
+            } else {
+              const area = document.createElement('textarea');
+              area.value = auditRequestText;
+              area.style.position = 'fixed';
+              area.style.opacity = '0';
+              document.body.append(area);
+              area.select();
+              const copied = document.execCommand('copy');
+              area.remove();
+              if (!copied) throw new Error('Clipboard not available');
+            }
+            $('auditRouteStatus').textContent = 'Copied. Paste the request into an email or message to send it; nothing was transmitted by this page.';
+          } catch (_) {
+            $('auditRouteStatus').textContent = 'Copy was blocked by the browser. You can still review the checklist above; no information was sent.';
+          }
+        });
+        $('editAuditButton').addEventListener('click', () => {
+          $('auditForm').hidden = false;
+          $('auditResults').classList.remove('show');
+          $('auditForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        document.querySelectorAll('[data-audit-purpose="audit"]').forEach((link) => link.addEventListener('click', () => {
+          auditPurpose = 'audit';
+          $('auditFormTitle').textContent = 'Request your free lead-loss audit';
+          $('auditSubmitText').textContent = 'Prepare my free audit';
+          $('auditForm').hidden = false;
+          $('auditResults').classList.remove('show');
+        }));
+        $('pilotRequestButton').addEventListener('click', () => {
+          auditPurpose = 'pilot';
+          $('auditFormTitle').textContent = 'Request the $299 founding pilot';
+          $('auditSubmitText').textContent = 'Prepare my pilot request';
+          $('auditForm').hidden = false;
+          $('auditResults').classList.remove('show');
+        });
+      }
+
+      setupPersonalization();
+      setupAuditForm();
+
+      // Start with a completed sample record so the product's shape is visible immediately.
+      setCurrentLead(sampleLead, false);
+      renderTimeline();
+      setDetail(-1);
+      $('workflowStatus').textContent = 'Ready';
+      $('nextAction').textContent = 'Review';
+    })();
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4599fd838621906',t:'MTc5MTE3MzkyNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
