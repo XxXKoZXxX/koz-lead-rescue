@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f7f3">
+  <title>KoZ Lead Rescue — Prospect Demo Builder</title>
+  <style>
+    :root{--ink:#182a24;--muted:#68786f;--paper:#f5f7f3;--white:#fff;--line:#e3eae2;--green:#1f6a53;--green-dark:#174b3d;--lime:#c9ef73;--shadow:0 18px 50px rgba(30,53,43,.08)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 10% 0%,rgba(201,239,115,.16),transparent 28rem),var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button,a{cursor:pointer}.wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}.top{height:72px;display:flex;align-items:center;border-bottom:1px solid rgba(24,42,36,.08)}.nav{display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}.mark{height:39px;width:39px;border-radius:12px;background:var(--lime);display:grid;place-items:center;color:var(--green-dark);font-weight:900;font-size:17px}.brand strong{font-size:17px;letter-spacing:-.04em}.brand small{display:block;margin-top:4px;color:#75847a;font-size:8px;letter-spacing:.15em;font-weight:800}.nav a.back{color:#5b6c63;text-decoration:none;font-size:11px;font-weight:700}.main{padding:50px 0 70px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #e2ebd7;background:#eff5e5;border-radius:99px;color:#4b6938;text-transform:uppercase;letter-spacing:.1em;font-size:9px;font-weight:800}.dot{width:7px;height:7px;border-radius:50%;background:#39a56f;box-shadow:0 0 0 3px rgba(57,165,111,.13)}h1{margin:18px 0 12px;max-width:760px;font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-.065em}.lead{max-width:720px;color:var(--muted);font-size:14px;line-height:1.7;margin:0}.grid{display:grid;grid-template-columns:1fr .9fr;gap:16px;align-items:start;margin-top:31px}.card{background:var(--white);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:23px}.card h2{margin:0 0 6px;font-size:18px;letter-spacing:-.04em}.desc{font-size:10px;line-height:1.6;color:var(--muted);margin:0 0 18px}.field{margin-bottom:13px}.field label{display:block;margin-bottom:6px;color:#45574d;font-size:10px;font-weight:750}.field input,.field select,.field textarea{width:100%;border:1px solid #e2e8e1;background:#fbfcfa;color:var(--ink);border-radius:10px;padding:11px 12px;font-size:11px;outline:none}.field textarea{min-height:83px;resize:vertical;line-height:1.55}.field input:focus,.field select:focus,.field textarea:focus{border-color:#79aa89;box-shadow:0 0 0 3px rgba(31,106,83,.09);background:#fff}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}.hint{margin:-6px 0 12px;color:#8a968f;font-size:9px;line-height:1.55}.btn{display:inline-flex;min-height:42px;align-items:center;justify-content:center;gap:8px;padding:0 15px;border:0;border-radius:11px;font-size:11px;font-weight:760;text-decoration:none;transition:.15s}.btn:hover{transform:translateY(-1px)}.dark{background:var(--green-dark);color:white}.dark:hover{background:#103e32}.light{background:white;border:1px solid var(--line);color:var(--ink)}.lime{background:var(--lime);color:var(--green-dark)}.form-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:6px}.safety{margin:12px 0 0;color:#8a968f;font-size:9px;line-height:1.5}.result{position:sticky;top:18px}.result .label{color:#738179;font-size:9px;letter-spacing:.12em;font-weight:820;text-transform:uppercase}.result h2{margin:9px 0 5px;font-size:18px;letter-spacing:-.04em}.result p{color:var(--muted);font-size:10px;line-height:1.6;margin:0 0 14px}.linkbox{width:100%;min-height:76px;padding:11px;border:1px solid #e2e8e1;border-radius:10px;background:#f8faf7;color:#456052;font-size:10px;line-height:1.5;overflow-wrap:anywhere;resize:vertical}.result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.divider{height:1px;background:#edf0eb;margin:20px 0}.messagebox{min-height:193px;padding:12px;border:1px solid #e2e8e1;border-radius:10px;background:#fbfcfa;color:#52645a;font:10px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.notice{margin-top:17px;padding:12px 13px;border:1px solid #f0e4c9;border-radius:11px;background:#fff8e9;color:#856535;font-size:9px;line-height:1.6}.notice strong{color:#705021}.footer{border-top:1px solid var(--line);padding:18px 0 27px;color:#7d8982;font-size:9px;line-height:1.6}.status{min-height:16px;margin-top:8px;color:#477254;font-size:9px;font-weight:700}.required{color:#a1612d}.preview-list{display:grid;gap:8px;margin-top:14px}.preview-list div{display:flex;gap:8px;color:#66766d;font-size:9px;line-height:1.5}.preview-list i{font-style:normal;color:#43815e;font-weight:900}
+    @media(max-width:820px){.grid{grid-template-columns:1fr}.result{position:static}.main{padding-top:38px}}
+    @media(max-width:560px){.wrap{width:calc(100% - 26px)}.top{height:64px}.field-row{grid-template-columns:1fr}.card{padding:18px}.main{padding-bottom:52px}.nav a.back{font-size:9px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="wrap nav">
+    <a class="brand" href="index.html"><span class="mark">K</span><span><strong>KoZ Lead Rescue</strong><small>PROSPECT DEMO BUILDER</small></span></a>
+    <a class="back" href="index.html">← Open the product demo</a>
+  </div></header>
+  <main class="wrap main">
+    <span class="eyebrow"><span class="dot"></span> Asynchronous-first prospecting</span>
+    <h1>Build a demo around one real business.</h1>
+    <p class="lead">Enter only public business details. This tool creates a personalized demo link and a written intro you can copy into an email or DM—no calls, CRM, or data upload required.</p>
+
+    <div class="grid">
+      <section class="card" aria-labelledby="setupTitle">
+        <h2 id="setupTitle">Personalize the walkthrough</h2>
+        <p class="desc">Use information you have verified. The generated preview changes the business name, trade, service area, and sample inquiry.</p>
+        <form id="builderForm">
+          <div class="field">
+            <label for="company">Business name <span class="required">*</span></label>
+            <input id="company" name="company" placeholder="e.g. Ridgeview Plumbing" required maxlength="70" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="contactFirst">Contact first name (optional)</label>
+            <input id="contactFirst" name="contactFirst" placeholder="Only if you know it" maxlength="40" autocomplete="given-name">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="trade">Type of contractor</label>
+              <select id="trade" name="trade">
+                <option value="roofing">Roofing</option>
+                <option value="plumbing">Plumbing</option>
+                <option value="hvac">Heating &amp; cooling</option>
+                <option value="electrical">Electrical</option>
+                <option value="gutters">Gutters &amp; exterior</option>
+                <option value="general">Other home services</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="focus">Workflow to emphasize</label>
+              <select id="focus" name="focus">
+                <option value="response">First-response speed</option>
+                <option value="after-hours">After-hours coverage</option>
+                <option value="qualification">Lead qualification</option>
+                <option value="follow-up">Consistent follow-up</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="area">Service area (optional)</label>
+              <input id="area" name="area" placeholder="e.g. Sussex County, NJ" maxlength="70">
+            </div>
+            <div class="field">
+              <label for="zip">Sample ZIP (optional)</label>
+              <input id="zip" name="zip" inputmode="numeric" placeholder="e.g. 07860" maxlength="10">
+            </div>
+          </div>
+          <div class="field">
+            <label for="website">Public website (optional)</label>
+            <input id="website" name="website" type="url" placeholder="https://business.com" maxlength="200">
+          </div>
+          <div class="field">
+            <label for="observation">One verified observation for your note (optional)</label>
+            <textarea id="observation" name="observation" placeholder="Example: I couldn't find a clear next step after the quote-request form. Only include something you personally checked."></textarea>
+          </div>
+          <p class="hint">Don't put private customer details, passwords, or assumptions here. A specific audit claim should come from a real review of the business's public inquiry path.</p>
+          <div class="form-actions">
+            <button class="btn dark" type="submit">Generate personalized demo <span aria-hidden="true">→</span></button>
+            <button class="btn light" type="reset">Clear</button>
+          </div>
+        </form>
+        <div class="preview-list">
+          <div><i>✓</i><span>Creates a query-based link; the demo itself needs to be published at a stable public URL before you share it.</span></div>
+          <div><i>✓</i><span>Personalization stays in the link and is visible to anyone who has it. Use public business information only.</span></div>
+          <div><i>✓</i><span>Copy a ready-to-edit written outreach note. You can keep the conversation asynchronous.</span></div>
+        </div>
+      </section>
+
+      <aside class="card result" aria-live="polite">
+        <div class="label">Prospect-ready materials</div>
+        <h2>Your personalized link and note</h2>
+        <p>Fill in the business name and generate a tailored walkthrough. Review the note before sending; it avoids claiming you found a problem unless you add a verified observation.</p>
+        <label class="field" for="generatedLink" style="display:block;color:#45574d;font-size:10px;font-weight:750;margin:0 0 6px">Personalized demo URL</label>
+        <textarea class="linkbox" id="generatedLink" readonly placeholder="Your share link will appear here"></textarea>
+        <div class="result-actions">
+          <button type="button" class="btn dark" id="copyLinkButton" disabled>Copy demo link</button>
+          <button type="button" class="btn light" id="openLinkButton" disabled>Preview link</button>
+        </div>
+        <div class="status" id="linkStatus" role="status"></div>
+        <div class="divider"></div>
+        <label style="display:block;color:#45574d;font-size:10px;font-weight:750;margin:0 0 6px" for="outreachMessage">Editable written intro</label>
+        <textarea class="messagebox" id="outreachMessage" aria-label="Editable outreach message" placeholder="Your intro will appear here after you generate the link"></textarea>
+        <div class="result-actions">
+          <button type="button" class="btn lime" id="copyMessageButton" disabled>Copy intro message</button>
+        </div>
+        <div class="status" id="messageStatus" role="status"></div>
+        <div class="notice" id="previewNotice"><strong>Launch note:</strong> the current Arena preview address is temporary. Don't send it to a prospect. Publish the static files to a domain you control, then generate links from that stable page.</div>
+      </aside>
+    </div>
+  </main>
+  <footer class="wrap footer">KoZ Lead Rescue · Prospect data is not sent to a server or saved by this tool. Generated links include only the public business details you enter.</footer>
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      let generated = '';
+      function getBaseUrl() {
+        const url = new URL('./index.html', window.location.href);
+        url.search = '';
+        url.hash = '';
+        return url;
+      }
+      function makeCopyText(text) {
+        if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+        return new Promise((resolve, reject) => {
+          const field = document.createElement('textarea');
+          field.value = text;
+          field.style.position = 'fixed';
+          field.style.opacity = '0';
+          document.body.append(field);
+          field.select();
+          const ok = document.execCommand('copy');
+          field.remove();
+          ok ? resolve() : reject(new Error('Clipboard unavailable'));
+        });
+      }
+      function focusLabel(value) {
+        return ({ response: 'first-response speed', 'after-hours': 'after-hours coverage', qualification: 'lead qualification', 'follow-up': 'follow-up consistency' })[value] || 'lead response';
+      }
+      $('builderForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const values = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const base = getBaseUrl();
+        base.searchParams.set('company', values.company.trim());
+        base.searchParams.set('trade', values.trade);
+        base.searchParams.set('focus', values.focus);
+        if (values.area.trim()) base.searchParams.set('area', values.area.trim());
+        if (values.zip.trim()) base.searchParams.set('zip', values.zip.trim());
+        if (values.website.trim()) base.searchParams.set('website', values.website.trim());
+        generated = base.toString();
+        $('generatedLink').value = generated;
+        $('copyLinkButton').disabled = false;
+        $('openLinkButton').disabled = false;
+        $('copyMessageButton').disabled = false;
+        const area = values.area.trim() ? ` in ${values.area.trim()}` : '';
+        const safeObservation = values.observation.trim();
+        const contactFirst = values.contactFirst.trim();
+        const greeting = contactFirst ? `Hi ${contactFirst},` : 'Hi,';
+        const tradeText = ({ roofing: 'roofing', plumbing: 'plumbing', hvac: 'heating and cooling', electrical: 'electrical', gutters: 'gutter and exterior', general: 'home services' })[values.trade] || 'home services';
+        let observationLine = safeObservation ? `\n\nOne thing I noticed when I checked your public inquiry path: ${safeObservation}` : '';
+        const auditLink = new URL(generated);
+        auditLink.hash = 'audit';
+        const message = `${greeting}\n\nI put together a short KoZ Lead Rescue walkthrough for ${values.company.trim()}${area}. It shows how a ${tradeText} team could acknowledge an incoming lead, organize a few useful details, and hand the next step to the owner.${observationLine}\n\nInteractive preview: ${generated}\n\nIf it looks useful, I can also send a free written lead-loss audit. The founding pilot is one intake workflow for $299 setup + $99/month. You can review the details or request the audit here: ${auditLink.toString()}\n\nNo call needed; happy to handle questions in writing.`;
+        $('outreachMessage').value = message;
+        $('linkStatus').textContent = 'Personalized URL generated. The link will work for prospects after the page is published to a stable public URL.';
+        $('messageStatus').textContent = 'Review the wording and verify any observation before you send it.';
+        const temporary = window.location.hostname.includes('e2b.app') || window.location.protocol === 'file:';
+        $('previewNotice').hidden = !temporary;
+      });
+      $('copyLinkButton').addEventListener('click', async () => {
+        if (!generated) return;
+        try { await makeCopyText(generated); $('linkStatus').textContent = 'Copied. Use the published-domain link when you contact a prospect.'; }
+        catch (_) { $('linkStatus').textContent = 'Clipboard access was blocked. Select and copy the URL above.'; }
+      });
+      $('openLinkButton').addEventListener('click', () => {
+        if (generated) window.open(generated, '_blank', 'noopener,noreferrer');
+      });
+      $('copyMessageButton').addEventListener('click', async () => {
+        const text = $('outreachMessage').value;
+        if (!text) return;
+        try { await makeCopyText(text); $('messageStatus').textContent = 'Copied. Edit it for your relationship and keep the claim factual.'; }
+        catch (_) { $('messageStatus').textContent = 'Clipboard access was blocked. Select and copy the message above.'; }
+      });
+      $('builderForm').addEventListener('reset', () => {
+        generated = '';
+        $('generatedLink').value = '';
+        $('outreachMessage').value = '';
+        $('copyLinkButton').disabled = true;
+        $('openLinkButton').disabled = true;
+        $('copyMessageButton').disabled = true;
+        $('linkStatus').textContent = '';
+        $('messageStatus').textContent = '';
+      });
+      const temporary = window.location.hostname.includes('e2b.app') || window.location.protocol === 'file:';
+      $('previewNotice').hidden = !temporary;
+    })();
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
