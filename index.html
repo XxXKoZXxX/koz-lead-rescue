@@ -296,6 +296,10 @@
       .audit-results-head { display:block; }
       .audit-count { display:inline-flex; margin-top:9px; }
     }
+  
+    /* Persistent MVP lead desk */
+    .desk-section{padding:20px 0 84px}.desk-header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:22px}.desk-header h2{margin:10px 0 7px;font-size:clamp(28px,3.5vw,40px);letter-spacing:-.055em}.desk-header p{margin:0;color:var(--muted);font-size:13px;line-height:1.6;max-width:670px}.desk-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}.desk-panel{border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--small-shadow)}.desk-panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:18px 19px;border-bottom:1px solid #edf0eb}.desk-panel-head h3{margin:0;font-size:15px;letter-spacing:-.03em}.desk-panel-head p{margin:4px 0 0;color:#77857e;font-size:10px}.pipeline{display:grid;grid-template-columns:repeat(4,minmax(145px,1fr));gap:10px;padding:14px;overflow-x:auto}.stage{min-width:145px;background:#f8faf7;border:1px solid #edf0eb;border-radius:13px;padding:10px}.stage-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px;font-size:10px;font-weight:800;color:#53665c}.stage-count{display:grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:#e7f2e8;color:#35664d;font-size:9px}.lead-card{width:100%;text-align:left;border:1px solid #e2e9e1;background:#fff;border-radius:10px;padding:10px;margin:0 0 8px;color:var(--ink);font:inherit;cursor:pointer}.lead-card:hover{border-color:#95b39d;box-shadow:0 4px 12px rgba(30,53,43,.06)}.lead-card strong{display:block;font-size:10px}.lead-card span{display:block;color:#77857e;font-size:9px;line-height:1.45;margin-top:4px}.lead-card em{display:inline-block;margin-top:7px;font-style:normal;color:#9a652f;background:#fff5e9;border-radius:99px;padding:3px 6px;font-size:8px;font-weight:800}.desk-side{display:grid;gap:16px;align-content:start}.settings-form{padding:17px}.settings-form .field{margin-bottom:10px}.settings-form .field label{font-size:9px}.settings-form .field input,.settings-form .field select{font-size:10px;padding:9px 10px}.settings-save{width:100%;min-height:38px;font-size:10px}.integration-list{padding:13px 17px 16px;display:grid;gap:10px}.integration-item{display:flex;gap:9px;align-items:flex-start;padding:10px;border:1px solid #edf0eb;border-radius:10px;background:#fafcf9}.integration-item b{display:block;font-size:10px}.integration-item span{display:block;margin-top:3px;color:#77857e;font-size:9px;line-height:1.4}.integration-dot{width:8px;height:8px;margin-top:3px;flex:0 0 auto;border-radius:50%;background:#d7dfd6}.integration-dot.ready{background:#8eaf67}.lead-detail{padding:17px}.detail-empty{margin:0;color:#77857e;font-size:10px;line-height:1.6}.detail-title{font-size:15px;font-weight:800;letter-spacing:-.03em}.detail-meta{margin:5px 0 12px;color:#728078;font-size:10px;line-height:1.55}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 12px}.detail-grid div{border:1px solid #edf0eb;border-radius:9px;background:#fafcf9;padding:8px}.detail-grid b{display:block;color:#7d8982;font-size:8px;letter-spacing:.07em;text-transform:uppercase}.detail-grid span{display:block;margin-top:4px;font-size:10px;word-break:break-word}.detail-note{width:100%;min-height:62px;border:1px solid #e2e8e1;border-radius:9px;padding:9px;font:10px/1.5 inherit;resize:vertical}.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.detail-actions .button{min-height:35px;padding:0 11px;font-size:10px}.desk-note{margin-top:12px;color:#7d8982;font-size:9px;line-height:1.55}.empty-stage{color:#93a098;font-size:9px;padding:7px 2px}.connection-copy{margin:0;padding:0 17px 14px;color:#77857e;font-size:9px;line-height:1.5}@media(max-width:900px){.desk-grid{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(4,160px)}}@media(max-width:680px){.desk-header{display:block}.desk-header .button{margin-top:14px}.detail-grid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -467,7 +471,7 @@
             <h2 id="demo-title">Try a lead from first click to follow-up.</h2>
             <p>Submit the sample inquiry or play the walkthrough. Watch the details appear in the contractor's lead desk, along with a response preview and the next actions.</p>
           </div>
-          <span class="demo-badge"><span class="tiny-dot" style="background:#d59248;box-shadow:0 0 0 3px rgba(213,146,72,.14)"></span> Browser-only simulation · nothing is sent</span>
+          <span class="demo-badge"><span class="tiny-dot" style="background:#d59248;box-shadow:0 0 0 3px rgba(213,146,72,.14)"></span> Local-first MVP · saves on this device</span>
         </div>
 
         <div class="demo-shell">
@@ -522,7 +526,7 @@
               </select>
             </div>
             <button class="button button-dark submit-button" type="submit">Run this inquiry <span aria-hidden="true">→</span></button>
-            <div class="form-privacy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.2 6.8V5.1a3.8 3.8 0 0 1 7.6 0v1.7M3 6.8h10v7H3v-7Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="8" cy="10.1" r=".8" fill="currentColor"/></svg> Browser-only preview: this does not send texts or emails or store your entry on a server.</div>
+            <div class="form-privacy"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.2 6.8V5.1a3.8 3.8 0 0 1 7.6 0v1.7M3 6.8h10v7H3v-7Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="8" cy="10.1" r=".8" fill="currentColor"/></svg> Local-first MVP: this saves an inquiry to this browser only. No messages are sent.</div>
           </form>
 
           <div class="panel console" aria-live="polite">
@@ -614,9 +618,40 @@
     </div>
   </main>
 
+
+      <section class="desk-section" id="lead-desk" aria-labelledby="leadDeskTitle">
+        <div class="desk-header">
+          <div><span class="eyebrow">Persistent MVP workspace</span><h2 id="leadDeskTitle">Lead Desk</h2><p>New inquiries are saved on this device, then move through a simple owner-controlled pipeline. This keeps the live demo intact while giving the product a real working core.</p></div>
+          <button class="button button-light" type="button" id="exportLeadsButton">Export leads</button>
+        </div>
+        <div class="desk-grid">
+          <div class="desk-panel">
+            <div class="desk-panel-head"><div><h3>Pipeline</h3><p>Click any lead to review details, add a note, or move it forward.</p></div><span class="micro-pill" id="storageStatus">Saved on this device</span></div>
+            <div class="pipeline" id="pipeline" aria-live="polite"></div>
+          </div>
+          <div class="desk-side">
+            <section class="desk-panel" aria-labelledby="businessSettingsTitle"><div class="desk-panel-head"><div><h3 id="businessSettingsTitle">Business settings</h3><p>Controls the saved workspace identity.</p></div></div>
+              <form class="settings-form" id="settingsForm">
+                <div class="field"><label for="settingBusinessName">Business name</label><input id="settingBusinessName" maxlength="70" required></div>
+                <div class="field"><label for="settingArea">Service area</label><input id="settingArea" maxlength="70" placeholder="e.g. North Jersey"></div>
+                <div class="field"><label for="settingTimezone">Timezone</label><select id="settingTimezone"><option>America/New_York</option><option>America/Chicago</option><option>America/Denver</option><option>America/Los_Angeles</option></select></div>
+                <div class="field"><label for="settingOwner">Owner notification email</label><input id="settingOwner" type="email" maxlength="120" placeholder="owner@business.com"></div>
+                <button class="button button-dark settings-save" type="submit">Save settings</button>
+              </form>
+            </section>
+            <section class="desk-panel" aria-labelledby="connectionsTitle"><div class="desk-panel-head"><div><h3 id="connectionsTitle">Connections</h3><p>Prepared interfaces; none are live yet.</p></div></div>
+              <div class="integration-list"><div class="integration-item"><i class="integration-dot ready"></i><div><b>Intake adapter</b><span>Website form writes a normalized lead record.</span></div></div><div class="integration-item"><i class="integration-dot"></i><div><b>Messaging adapter</b><span>Reserved for consent-aware SMS or email delivery.</span></div></div><div class="integration-item"><i class="integration-dot"></i><div><b>Calendar adapter</b><span>Reserved for availability checks and visit requests.</span></div></div></div>
+              <p class="connection-copy">The app emits browser events for lead creation and updates, providing a clean later handoff to a secure server integration.</p>
+            </section>
+          </div>
+        </div>
+        <section class="desk-panel" style="margin-top:16px" aria-labelledby="leadDetailTitle"><div class="desk-panel-head"><div><h3 id="leadDetailTitle">Lead details</h3><p>Nothing is sent automatically.</p></div></div><div class="lead-detail" id="leadDetail"><p class="detail-empty">Select a lead from the pipeline to see its contact details, request, and internal note.</p></div></section>
+        <p class="desk-note">This MVP uses your browser’s local storage, so records persist between visits on this device but are not shared across devices or backed up. A hosted database and authenticated team access are the next production step.</p>
+      </section>
+
   <footer class="wrap footer">
     <span><strong>KoZ Lead Rescue</strong> · A small first step toward fewer missed inquiries.</span>
-    <span>Interactive sales preview · No real messages are sent or data stored on a server.</span>
+    <span>Local-first MVP · Leads persist in this browser. No messages are sent automatically.</span>
   </footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -801,6 +836,12 @@
         runWorkflow(lead, true);
         showToast('Test inquiry created in this browser only.');
       });
+      $('leadForm').addEventListener('submit', (event) => {
+        if (!event.currentTarget.checkValidity()) return;
+        const data = new FormData(event.currentTarget);
+        addPersistedLead({ name:String(data.get('customerName')||'').trim(), contact:String(data.get('contact')||'').trim(), zip:String(data.get('zip')||'').trim(), service:String(data.get('service')||'').trim(), urgency:String(data.get('urgency')||'').trim(), details:String(data.get('details')||'').trim(), preferred:String(data.get('preferred')||'').trim() });
+        showToast('Inquiry saved to the Lead Desk on this device.');
+      });
       $('replayButton').addEventListener('click', () => runWorkflow(currentLead, $('displaySource').textContent.includes('TEST')));
       $('sampleButton').addEventListener('click', useSample);
 
@@ -976,6 +1017,69 @@
           $('auditResults').classList.remove('show');
         });
       }
+
+
+      // Persistent local-first Lead Desk. Server adapters can subscribe to these events later.
+      const KOZ_STORE = 'koz-lead-rescue:v1';
+      const stages = [
+        { key: 'new', label: 'New' }, { key: 'reviewing', label: 'Reviewing' },
+        { key: 'follow_up', label: 'Follow-up' }, { key: 'closed', label: 'Closed' }
+      ];
+      const defaultWorkspace = { businessName: displayedBusinessName, serviceArea: serviceArea, timezone: 'America/New_York', ownerEmail: '' };
+      let workspace = defaultWorkspace, savedLeads = [], selectedLeadId = null;
+      const now = () => new Date().toISOString();
+      const leadId = () => 'lead_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+      function normalizeSavedLead(lead) { return { id: lead.id || leadId(), status: stages.some(s => s.key === lead.status) ? lead.status : 'new', note: String(lead.note || ''), createdAt: lead.createdAt || now(), ...lead }; }
+      function readStore() {
+        try { const parsed = JSON.parse(localStorage.getItem(KOZ_STORE) || '{}'); workspace = { ...defaultWorkspace, ...(parsed.workspace || {}) }; savedLeads = Array.isArray(parsed.leads) ? parsed.leads.map(normalizeSavedLead) : []; }
+        catch (_) { workspace = defaultWorkspace; savedLeads = []; }
+      }
+      function writeStore(eventName, payload) {
+        localStorage.setItem(KOZ_STORE, JSON.stringify({ workspace, leads: savedLeads }));
+        window.dispatchEvent(new CustomEvent(eventName, { detail: payload }));
+      }
+      function formatWhen(value) { try { return new Intl.DateTimeFormat(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit', timeZone: workspace.timezone }).format(new Date(value)); } catch (_) { return 'Just now'; } }
+      function renderPipeline() {
+        $('pipeline').innerHTML = stages.map(stage => {
+          const leads = savedLeads.filter(lead => lead.status === stage.key);
+          return '<section class="stage"><div class="stage-head"><span>' + stage.label + '</span><span class="stage-count">' + leads.length + '</span></div>' +
+            (leads.length ? leads.map(lead => '<button class="lead-card" type="button" data-lead-id="' + escapeHtml(lead.id) + '"><strong>' + escapeHtml(lead.name) + '</strong><span>' + escapeHtml(lead.service) + ' · ' + escapeHtml(lead.zip) + '</span><em>' + escapeHtml(lead.urgency) + '</em></button>').join('') : '<p class="empty-stage">No leads here yet.</p>') + '</section>';
+        }).join('');
+        document.querySelectorAll('[data-lead-id]').forEach(button => button.addEventListener('click', () => { selectedLeadId = button.dataset.leadId; renderLeadDetail(); }));
+      }
+      function renderLeadDetail() {
+        const lead = savedLeads.find(item => item.id === selectedLeadId);
+        if (!lead) { $('leadDetail').innerHTML = '<p class="detail-empty">Select a lead from the pipeline to see its contact details, request, and internal note.</p>'; return; }
+        const options = stages.map(stage => '<option value="' + stage.key + '"' + (lead.status === stage.key ? ' selected' : '') + '>' + stage.label + '</option>').join('');
+        $('leadDetail').innerHTML = '<div class="detail-title">' + escapeHtml(lead.name) + '</div><p class="detail-meta">Captured ' + escapeHtml(formatWhen(lead.createdAt)) + ' · Website intake</p><div class="detail-grid"><div><b>Contact</b><span>' + escapeHtml(lead.contact || 'Not provided') + '</span></div><div><b>Requested service</b><span>' + escapeHtml(lead.service) + '</span></div><div><b>Timing</b><span>' + escapeHtml(lead.urgency) + '</span></div><div><b>Preferred visit</b><span>' + escapeHtml(lead.preferred || 'Not specified') + '</span></div></div><div class="field"><label for="leadStage">Pipeline stage</label><select id="leadStage">' + options + '</select></div><div class="field"><label for="leadNote">Internal note</label><textarea class="detail-note" id="leadNote" maxlength="1000" placeholder="Add a private follow-up note.">' + escapeHtml(lead.note) + '</textarea></div><p class="detail-meta"><b>Inquiry:</b> ' + escapeHtml(lead.details || 'No details provided.') + '</p><div class="detail-actions"><button class="button button-dark" id="saveLeadButton" type="button">Save lead changes</button><button class="button button-light" id="copyLeadButton" type="button">Copy summary</button></div>';
+        $('saveLeadButton').addEventListener('click', () => {
+          lead.status = $('leadStage').value; lead.note = $('leadNote').value.trim(); lead.updatedAt = now();
+          writeStore('koz:lead-updated', lead); renderPipeline(); renderLeadDetail(); showToast('Lead changes saved on this device.');
+        });
+        $('copyLeadButton').addEventListener('click', async () => {
+          const summary = lead.name + '\n' + (lead.contact || 'No contact') + '\n' + lead.service + ' · ' + lead.urgency + '\n' + (lead.details || '');
+          try { await navigator.clipboard.writeText(summary); showToast('Lead summary copied.'); } catch (_) { showToast('Clipboard blocked. Select and copy the details manually.'); }
+        });
+      }
+      function addPersistedLead(lead) {
+        const record = normalizeSavedLead({ ...lead, id: leadId(), status: 'new', createdAt: now() });
+        savedLeads.unshift(record); selectedLeadId = record.id; writeStore('koz:lead-created', record); renderPipeline(); renderLeadDetail();
+      }
+      function syncSettingsForm() {
+        $('settingBusinessName').value = workspace.businessName || ''; $('settingArea').value = workspace.serviceArea || ''; $('settingTimezone').value = workspace.timezone || 'America/New_York'; $('settingOwner').value = workspace.ownerEmail || '';
+      }
+      $('settingsForm').addEventListener('submit', event => {
+        event.preventDefault(); workspace = { businessName: $('settingBusinessName').value.trim(), serviceArea: $('settingArea').value.trim(), timezone: $('settingTimezone').value, ownerEmail: $('settingOwner').value.trim() };
+        writeStore('koz:settings-updated', workspace); $('businessName').textContent = workspace.businessName || displayedBusinessName; $('accountSub').textContent = [tradeProfile.label, workspace.serviceArea, 'Lead Desk'].filter(Boolean).join(' · '); renderLeadDetail(); showToast('Business settings saved on this device.');
+      });
+      $('exportLeadsButton').addEventListener('click', () => {
+        const headers = ['name','contact','zip','service','urgency','preferred','details','status','note','createdAt'];
+        const esc = value => '"' + String(value || '').replace(/"/g, '""') + '"';
+        const csv = [headers.join(','), ...savedLeads.map(lead => headers.map(key => esc(lead[key])).join(','))].join('\n');
+        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); const a = document.createElement('a'); a.href = url; a.download = 'koz-leads-' + new Date().toISOString().slice(0,10) + '.csv'; a.click(); URL.revokeObjectURL(url); showToast('Lead export downloaded.');
+      });
+      readStore(); syncSettingsForm(); renderPipeline(); renderLeadDetail();
+
 
       setupPersonalization();
       setupAuditForm();
