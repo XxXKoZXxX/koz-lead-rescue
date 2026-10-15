@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f3">
+  <meta name="description" content="KoZ Lead Rescue Lead Desk — securely manage incoming service leads and follow-up.">
+  <title>Lead Desk — KoZ Lead Rescue</title>
+  <style>
+    :root{--ink:#182a24;--muted:#66766f;--paper:#f5f7f3;--white:#fff;--line:#e3eae2;--green:#1f6a53;--dark:#174b3d;--lime:#c9ef73;--red:#b74436;--amber:#94621f}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inherit}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+    header{background:#fff;border-bottom:1px solid var(--line)}.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;gap:10px;align-items:center;text-decoration:none}.mark{width:40px;height:40px;display:grid;place-items:center;background:var(--lime);border-radius:12px;color:var(--dark);font-weight:900;font-size:18px}.brand strong{display:block;font-size:17px;letter-spacing:-.04em}.brand small{display:block;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.14em;margin-top:4px}.btn{border:0;border-radius:10px;padding:11px 15px;font-size:12px;font-weight:750}.primary{background:var(--dark);color:white}.secondary{background:white;border:1px solid var(--line);color:var(--ink)}.danger{background:#fff0ed;color:var(--red);border:1px solid #f0d0ca}
+    main{padding:30px 0 55px}.hidden{display:none!important}.notice{padding:14px 16px;border:1px solid #e5d7b6;background:#fff8e8;color:#755626;border-radius:12px;font-size:12px;line-height:1.6;margin-bottom:18px}.notice.error{background:#fff0ed;border-color:#f0d0ca;color:#8c3027}.notice.good{background:#edf8ee;border-color:#d7ead7;color:#2c6440}.auth{max-width:450px;margin:35px auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 14px 38px #183b2810}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.13em;color:var(--green);text-transform:uppercase}.auth h1{font-size:29px;letter-spacing:-.05em;margin:10px 0}.sub{font-size:13px;color:var(--muted);line-height:1.65}.field{margin:14px 0}.field label{display:block;font-size:11px;font-weight:750;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid #dfe7df;border-radius:10px;padding:11px 12px;background:#fbfcfa;color:var(--ink);font-size:13px}.field textarea{min-height:90px;resize:vertical}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tiny{font-size:11px;color:var(--muted);line-height:1.6}.apphead{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:22px}.apphead h1{font-size:34px;letter-spacing:-.06em;margin:8px 0}.apphead p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:16px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px;box-shadow:0 7px 22px #1e352b08}.card h2{font-size:16px;margin:0 0 6px;letter-spacing:-.03em}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px}.stat span{display:block;color:var(--muted);font-size:10px;font-weight:700}.stat b{display:block;font-size:24px;margin-top:8px;letter-spacing:-.05em}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 12px}.toolbar input{max-width:270px;width:100%;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:12px}.leads{display:grid;gap:8px}.lead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#fff}.lead.selected{border-color:#84b397;background:#f6fbf5}.lead-main{min-width:0}.lead-main b{display:block;font-size:12px;overflow-wrap:anywhere}.lead-main small{display:block;color:var(--muted);font-size:10px;margin-top:5px;line-height:1.5}.pill{display:inline-block;padding:5px 7px;border-radius:99px;background:#edf5e6;color:#3e6b48;font-size:9px;font-weight:800;white-space:nowrap}.empty{padding:22px 12px;text-align:center;color:var(--muted);font-size:12px;line-height:1.6;border:1px dashed #dce6dc;border-radius:12px}.sectiongap{margin-top:18px}.detailmeta{font-size:11px;color:var(--muted);line-height:1.6;margin:8px 0 15px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions .btn{flex:1}.settings{margin-top:16px}.footer{padding:24px 0;color:#829087;font-size:10px;text-align:center}
+    @media(max-width:850px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.apphead{align-items:flex-start}.apphead h1{font-size:28px}}
+    @media(max-width:520px){.wrap{width:calc(100% - 22px)}.nav{min-height:64px}.brand strong{font-size:14px}.apphead{display:block}.apphead .btn{margin-top:14px}.field-row{grid-template-columns:1fr}.card,.auth{padding:16px}.lead{align-items:flex-start}.lead .pill{white-space:normal}.stats{gap:7px}.stat{padding:10px}.stat b{font-size:21px}}
+  </style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="/"><span class="mark">K</span><span><strong>KoZ Lead Rescue</strong><small>LEAD DESK</small></span></a><div><a class="btn secondary" href="/">Back to website</a> <button id="signOut" class="btn secondary hidden" type="button">Sign out</button></div></div></header>
+<main class="wrap">
+  <div id="configNotice" class="notice hidden"></div>
+  <div id="status" class="notice hidden" role="status"></div>
+  <section id="authPanel" class="auth">
+    <span class="eyebrow">Secure business workspace</span><h1>Keep every lead moving.</h1>
+    <p class="sub">Sign in to manage inquiries, notes, and follow-up stages. Your records are stored in your business workspace, not just in this browser.</p>
+    <form id="authForm">
+      <div class="field"><label for="email">Business email</label><input id="email" type="email" autocomplete="email" required maxlength="254"></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="8" required></div>
+      <div class="auth-actions"><button class="btn primary" type="submit" id="signInBtn">Sign in</button><button class="btn secondary" type="button" id="signUpBtn">Create account</button></div>
+    </form>
+    <p class="tiny">Use a unique password. If email confirmation is enabled, confirm the message before signing in. Don't enter real customer data until the workspace is configured and tested.</p>
+  </section>
+  <section id="dashboard" class="hidden">
+    <div class="apphead"><div><span class="eyebrow">Your workspace</span><h1 id="businessHeading">Lead Desk</h1><p id="welcomeText">Loading your business workspace…</p></div><button class="btn secondary" id="exportBtn" type="button">Export CSV</button></div>
+    <div class="stats"><div class="stat"><span>All leads</span><b id="statAll">0</b></div><div class="stat"><span>New</span><b id="statNew">0</b></div><div class="stat"><span>Follow-up</span><b id="statFollow">0</b></div><div class="stat"><span>Closed</span><b id="statClosed">0</b></div></div>
+    <div class="grid">
+      <section class="card"><h2>Lead pipeline</h2><p class="tiny">Choose a lead to review its details, update its stage, and record the next step.</p><div class="toolbar"><strong style="font-size:12px">Recent inquiries</strong><input id="searchLeads" placeholder="Search name, service, ZIP…" aria-label="Search leads"></div><div id="leadList" class="leads"><div class="empty">Loading leads…</div></div>
+        <div class="sectiongap"><h2>Add a lead manually</h2><p class="tiny">Use this for an inquiry received by phone, email, or your existing website.</p>
+        <form id="leadForm"><div class="field"><label for="leadName">Customer name *</label><input id="leadName" required maxlength="120"></div><div class="field-row"><div class="field"><label for="leadEmail">Email</label><input id="leadEmail" type="email" maxlength="254"></div><div class="field"><label for="leadPhone">Phone</label><input id="leadPhone" type="tel" maxlength="40"></div></div><div class="field-row"><div class="field"><label for="leadService">Requested service</label><input id="leadService" value="General inquiry" maxlength="120"></div><div class="field"><label for="leadZip">ZIP code</label><input id="leadZip" maxlength="12"></div></div><div class="field-row"><div class="field"><label for="leadUrgency">Timing</label><select id="leadUrgency"><option>Not specified</option><option>Emergency</option><option>Within 24 hours</option><option>This week</option><option>Flexible</option></select></div><div class="field"><label for="leadPreferred">Preferred visit / time</label><input id="leadPreferred" maxlength="120"></div></div><div class="field"><label for="leadDetails">Request details</label><textarea id="leadDetails" maxlength="3000"></textarea></div><button class="btn primary" id="saveNewLead" type="submit">Save lead to workspace</button></form></div>
+      </section>
+      <aside>
+        <section class="card"><h2>Selected lead</h2><p class="tiny">Private notes stay in your business workspace.</p><div id="leadDetail" class="empty">Select a lead to edit its status and notes.</div></section>
+        <section class="card settings"><h2>Business settings</h2><p class="tiny">These details are saved to your account.</p><form id="settingsForm"><div class="field"><label for="businessName">Business name</label><input id="businessName" required maxlength="120"></div><div class="field"><label for="serviceArea">Service area</label><input id="serviceArea" maxlength="160"></div><div class="field"><label for="ownerEmail">Owner notification email</label><input id="ownerEmail" type="email" maxlength="254"></div><div class="field"><label for="timezone">Time zone</label><select id="timezone"><option value="America/New_York">Eastern</option><option value="America/Chicago">Central</option><option value="America/Denver">Mountain</option><option value="America/Los_Angeles">Pacific</option><option value="America/Phoenix">Arizona</option><option value="America/Anchorage">Alaska</option><option value="Pacific/Honolulu">Hawaii</option></select></div><button class="btn secondary" type="submit">Save settings</button></form></section>
+      </aside>
+    </div>
+  </section>
+  <div class="footer">KoZ Lead Rescue · Keep customer data private. This MVP does not yet send SMS or email automatically.</div>
+</main>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.117.3';
+const $ = id => document.getElementById(id);
+const show = (el, yes=true) => el.classList.toggle('hidden', !yes);
+let supabase = null, user = null, business = null, leads = [], selectedId = null, configReady = false;
+const statuses = {new:'New',reviewing:'Reviewing',follow_up:'Follow-up',closed:'Closed'};
+function message(text, type='') { $('status').textContent=text; $('status').className='notice'+(type?' '+type:''); show($('status'),Boolean(text)); }
+function escapeHtml(value='') { return String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function safeError(error) { return error?.message || 'Something went wrong. Please try again.'; }
+async function init() {
+  try {
+    const response = await fetch('/api/config', {headers:{Accept:'application/json'}});
+    const config = await response.json();
+    if (!response.ok || !config.configured) {
+      $('configNotice').textContent='Setup required: the app is deployed, but Supabase is not connected yet. Create the dedicated database, apply supabase/schema.sql, and add SUPABASE_URL plus SUPABASE_PUBLISHABLE_KEY to Vercel before using customer data.';
+      show($('configNotice')); $('authPanel').classList.add('hidden'); return;
+    }
+    supabase = createClient(config.supabaseUrl, config.supabaseKey);
+    configReady = true;
+    const {data:{session}} = await supabase.auth.getSession();
+    if (session?.user) await enterApp(session.user);
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) { user=session.user; setTimeout(()=>enterApp(session.user),0); }
+      else { user=null; business=null; leads=[]; show($('dashboard'),false); show($('authPanel'),true); show($('signOut'),false); }
+    });
+  } catch (error) { message('Could not initialize the app: '+safeError(error),'error'); }
+}
+$('authForm').addEventListener('submit', async event => {
+  event.preventDefault(); if(!configReady)return;
+  $('signInBtn').disabled=true;
+  try {
+    const {error} = await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
+    if(error) throw error;
+    message('Signed in. Loading workspace…','good');
+  } catch(error) { message(safeError(error),'error'); }
+  finally {$('signInBtn').disabled=false;}
+});
+$('signUpBtn').addEventListener('click', async () => {
+  if(!configReady)return;
+  const email=$('email').value.trim(), password=$('password').value;
+  if(!email || password.length<8){message('Enter your email and a password of at least 8 characters first.','error');return;}
+  try {
+    const {data,error}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:location.origin+'/app/'}});
+    if(error) throw error;
+    if(data.session) await enterApp(data.user);
+    else message('Account created. Check your email to confirm the account, then sign in.','good');
+  } catch(error){message(safeError(error),'error');}
+});
+$('signOut').addEventListener('click',async()=>{const {error}=await supabase.auth.signOut();if(error)message(safeError(error),'error');});
+async function enterApp(authUser) {
+  user=authUser; show($('authPanel'),false); show($('dashboard'),true); show($('signOut'),true); message('');
+  $('welcomeText').textContent='Signed in as '+(user.email||'your account')+'.';
+  try {
+    let {data:rows,error}=await supabase.from('businesses').select('*').eq('owner_id',user.id).limit(1);
+    if(error)throw error;
+    business=rows?.[0]||null;
+    if(!business){
+      const {data,error:createError}=await supabase.from('businesses').insert({owner_id:user.id,business_name:(user.email?.split('@')[0]||'My Business').slice(0,120),owner_email:user.email||''}).select('*').single();
+      if(createError)throw createError; business=data;
+    }
+    $('businessName').value=business.business_name||'';$('serviceArea').value=business.service_area||'';$('ownerEmail').value=business.owner_email||user.email||'';$('timezone').value=business.timezone||'America/New_York';
+    await loadLeads();
+  } catch(error) { message('Workspace setup failed: '+safeError(error)+' — verify that supabase/schema.sql has been applied.','error'); }
+}
+async function loadLeads() {
+  if(!business)return;
+  const {data,error}=await supabase.from('leads').select('*').eq('business_id',business.id).order('created_at',{ascending:false}).limit(500);
+  if(error)throw error;leads=data||[];renderLeads();renderStats();renderDetail();
+}
+function renderStats(){ $('statAll').textContent=leads.length;$('statNew').textContent=leads.filter(l=>l.status==='new').length;$('statFollow').textContent=leads.filter(l=>l.status==='follow_up').length;$('statClosed').textContent=leads.filter(l=>l.status==='closed').length; }
+function renderLeads(){
+  const q=$('searchLeads').value.trim().toLowerCase();
+  const filtered=leads.filter(l=>[l.name,l.email,l.phone,l.service,l.zip,l.details].join(' ').toLowerCase().includes(q));
+  $('leadList').innerHTML=filtered.length?filtered.map(l=>'<button type="button" class="lead '+(l.id===selectedId?'selected':'')+'" data-id="'+escapeHtml(l.id)+'"><span class="lead-main"><b>'+escapeHtml(l.name)+'</b><small>'+escapeHtml(l.service)+' · '+escapeHtml(l.zip||'No ZIP')+' · '+escapeHtml(new Date(l.created_at).toLocaleDateString())+'</small></span><span class="pill">'+escapeHtml(statuses[l.status]||l.status)+'</span></button>').join(''):'<div class="empty">No leads match. Add your first lead using the form below.</div>';
+  $('leadList').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{selectedId=b.dataset.id;renderLeads();renderDetail();}));
+}
+function renderDetail(){
+  const l=leads.find(x=>x.id===selectedId);
+  if(!l){$('leadDetail').className='empty';$('leadDetail').textContent='Select a lead to edit its status and notes.';return;}
+  $('leadDetail').className='';
+  $('leadDetail').innerHTML='<div style="font-weight:800;font-size:14px">'+escapeHtml(l.name)+'</div><div class="detailmeta">'+escapeHtml(l.email||'No email')+' · '+escapeHtml(l.phone||'No phone')+'<br>Service: '+escapeHtml(l.service)+'<br>ZIP: '+escapeHtml(l.zip||'Not provided')+'<br>Timing: '+escapeHtml(l.urgency)+'<br>Preferred: '+escapeHtml(l.preferred||'Not specified')+'<br>Inquiry: '+escapeHtml(l.details||'No details')+'</div><form id="detailForm"><div class="field"><label for="detailStatus">Pipeline stage</label><select id="detailStatus">'+Object.entries(statuses).map(([k,v])=>'<option value="'+k+'" '+(l.status===k?'selected':'')+'>'+v+'</option>').join('')+'</select></div><div class="field"><label for="detailNote">Private internal note</label><textarea id="detailNote" maxlength="2000">'+escapeHtml(l.note||'')+'</textarea></div><div class="actions"><button class="btn primary" type="submit">Save changes</button><button class="btn danger" type="button" id="deleteLead">Delete</button></div></form>';
+  $('detailForm').addEventListener('submit',async e=>{e.preventDefault();try{const {error}=await supabase.from('leads').update({status:$('detailStatus').value,note:$('detailNote').value.trim()}).eq('id',l.id).eq('business_id',business.id);if(error)throw error;message('Lead updated.','good');await loadLeads();}catch(error){message(safeError(error),'error');}});
+  $('deleteLead').addEventListener('click',async()=>{if(!confirm('Permanently delete this lead?'))return;try{const {error}=await supabase.from('leads').delete().eq('id',l.id).eq('business_id',business.id);if(error)throw error;selectedId=null;message('Lead deleted.','good');await loadLeads();}catch(error){message(safeError(error),'error');}});
+}
+$('leadForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(!business)return;
+  const record={business_id:business.id,name:$('leadName').value.trim(),email:$('leadEmail').value.trim(),phone:$('leadPhone').value.trim(),service:$('leadService').value.trim()||'General inquiry',zip:$('leadZip').value.trim(),urgency:$('leadUrgency').value,preferred:$('leadPreferred').value.trim(),details:$('leadDetails').value.trim(),source:'manual'};
+  try{const {data,error}=await supabase.from('leads').insert(record).select('*').single();if(error)throw error;selectedId=data.id;e.target.reset();$('leadService').value='General inquiry';$('leadUrgency').value='Not specified';message('Lead saved to your secure workspace.','good');await loadLeads();}catch(error){message(safeError(error),'error');}
+});
+$('settingsForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(!business)return;
+  const patch={business_name:$('businessName').value.trim(),service_area:$('serviceArea').value.trim(),owner_email:$('ownerEmail').value.trim(),timezone:$('timezone').value};
+  try{const {data,error}=await supabase.from('businesses').update(patch).eq('id',business.id).eq('owner_id',user.id).select('*').single();if(error)throw error;business=data;$('businessHeading').textContent=business.business_name;message('Business settings saved.','good');}catch(error){message(safeError(error),'error');}
+});
+$('searchLeads').addEventListener('input',renderLeads);
+$('exportBtn').addEventListener('click',()=>{
+  const headers=['name','email','phone','zip','service','urgency','preferred','details','status','note','created_at'];
+  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const csv=[headers.join(','),...leads.map(l=>headers.map(k=>q(l[k])).join(','))].join('\r\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='koz-leads-'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(url);
+});
+init();
+</script>
+</body>
+</html>
