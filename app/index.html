@@ -65,11 +65,14 @@ async function init() {
     }
     supabase = createClient(config.supabaseUrl, config.supabaseKey);
     configReady = true;
-    const {data:{session}} = await supabase.auth.getSession();
-    if (session?.user) await enterApp(session.user);
     supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) { user=session.user; setTimeout(()=>enterApp(session.user),0); }
-      else { user=null; business=null; leads=[]; show($('dashboard'),false); show($('authPanel'),true); show($('signOut'),false); }
+      if (session?.user) {
+        user = session.user;
+        setTimeout(() => { if (user?.id === session.user.id) enterApp(session.user); }, 0);
+      } else {
+        user=null; business=null; leads=[]; selectedId=null;
+        show($('dashboard'),false); show($('authPanel'),true); show($('signOut'),false);
+      }
     });
   } catch (error) { message('Could not initialize the app: '+safeError(error),'error'); }
 }
@@ -106,6 +109,7 @@ async function enterApp(authUser) {
       const {data,error:createError}=await supabase.from('businesses').insert({owner_id:user.id,business_name:(user.email?.split('@')[0]||'My Business').slice(0,120),owner_email:user.email||''}).select('*').single();
       if(createError)throw createError; business=data;
     }
+    $('businessHeading').textContent=business.business_name||'Lead Desk';
     $('businessName').value=business.business_name||'';$('serviceArea').value=business.service_area||'';$('ownerEmail').value=business.owner_email||user.email||'';$('timezone').value=business.timezone||'America/New_York';
     await loadLeads();
   } catch(error) { message('Workspace setup failed: '+safeError(error)+' — verify that supabase/schema.sql has been applied.','error'); }
