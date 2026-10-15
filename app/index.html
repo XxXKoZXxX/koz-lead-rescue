@@ -90,8 +90,8 @@ $('signUpBtn').addEventListener('click', async () => {
   try {
     const {data,error}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:location.origin+'/app/'}});
     if(error) throw error;
-    if(data.session) await enterApp(data.user);
-    else message('Account created. Check your email to confirm the account, then sign in.','good');
+    if(!data.session) message('Account created. Check your email to confirm the account, then sign in.','good');
+    else message('Account created. Loading your workspace…','good');
   } catch(error){message(safeError(error),'error');}
 });
 $('signOut').addEventListener('click',async()=>{const {error}=await supabase.auth.signOut();if(error)message(safeError(error),'error');});
